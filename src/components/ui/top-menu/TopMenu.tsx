@@ -1,11 +1,11 @@
 import { titleFont } from "@/config";
 import Link from "next/link";
 import React from "react";
-import { IoCartOutline, IoSearch, IoSearchOutline } from "react-icons/io5";
+import { IoCartOutline, IoSearchOutline } from "react-icons/io5";
 
 export const TopMenu = () => {
   return (
-    <nav className="flex p-5 justify-between items-center w-full">
+    <nav className="flex py-5 justify-between items-center w-full">
       {/* logo */}
 
       <div>
