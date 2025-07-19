@@ -8,7 +8,7 @@ export default function ShopLayout({
   return (
     
     <div>
-      <SideBar isOpen={true}/>
+      <SideBar/>
       <main className="min-h-screen grid grid-rows-[auto_1fr] px-1 md:px-[40px]">
         <TopMenu />
         <div>{children}</div>

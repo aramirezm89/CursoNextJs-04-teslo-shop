@@ -1,23 +1,22 @@
 'use client'
-import { useState } from "react";
-import { IoCloseOutline } from "react-icons/io5";
+import { useUiStore } from "@/store/uiStore";
+
+import { IoCloseOutline, IoSearch } from "react-icons/io5";
 
 // SideBar.tsx
-interface SideBarProps {
-  isOpen: boolean;
-}
 
-export const SideBar = ({ isOpen }: SideBarProps) => {
+export const SideBar = () => {
+  const uiStore = useUiStore();
 
-    const [toggleMenu, setToogleMenu] = useState(isOpen)
+
   return (
     <div
       className={`fixed inset-0 z-5 transform transition-transform duration-300 ease-in-out ${
-        toggleMenu ? "translate-x-0" : "translate-x-full"
+        uiStore.openClose ? "translate-x-0" : "translate-x-full"
       }`}
     >
       {/* Fondo oscuro */}
-      {isOpen && (
+      {uiStore.openClose && (
         <>
           <div className="fixed top-0 left-0 w-screen h-screen z-10 bg-black opacity-30" />
           <div className="fade-in fixed top-0 left-0 w-screen h-screen z-10 backdrop-blur-sm" />
@@ -26,15 +25,26 @@ export const SideBar = ({ isOpen }: SideBarProps) => {
 
       {/* Sidebar con animación */}
       <nav
-        className={`fixed top-0 right-0 w-[500px] h-screen bg-white z-50 shadow-2xl p-5 `}
+        className={`fixed top-0 right-0 w-full sm:w-[500px] h-screen bg-white z-50 shadow-2xl p-5 `}
       >
         {/* Contenido aquí */}
 
         <IoCloseOutline
-          onClick={() => setToogleMenu(false)}
+          onClick={() => uiStore.toogleSidebar()}
           size={50}
           className="absolute top-5 right-5 cursor-pointer"
         />
+
+        <div className="relative mt-14">
+          
+            <IoSearch size={20} className="absolute top-2  left-1 " />
+            <input
+            type="text"
+              className="w-full bg-gray-50 rounded pl-7 pr-5 py-1 border-b-2 text-xl border-gray-200 focus:outline-none focus:border-blue-500"
+              placeholder=" "
+            />
+     
+        </div>
       </nav>
     </div>
   );
