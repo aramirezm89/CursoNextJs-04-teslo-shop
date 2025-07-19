@@ -16,12 +16,12 @@ export const SideBar = () => {
       }`}
     >
       {/* Fondo oscuro */}
-      {uiStore.openClose && (
+     
         <>
           <div className="fixed top-0 left-0 w-screen h-screen z-10 bg-black opacity-30" />
           <div className="fade-in fixed top-0 left-0 w-screen h-screen z-10 backdrop-blur-sm" />
         </>
-      )}
+   
 
       {/* Sidebar con animación */}
       <nav
