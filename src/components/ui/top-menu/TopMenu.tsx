@@ -5,7 +5,7 @@ import { IoCartOutline, IoSearchOutline } from "react-icons/io5";
 
 export const TopMenu = () => {
   return (
-    <nav className="flex py-5 justify-between items-center w-full">
+    <nav className="flex py-5 justify-between items-center w-full ">
       {/* logo */}
 
       <div>
@@ -47,8 +47,8 @@ export const TopMenu = () => {
           <IoSearchOutline size={24} />
         </Link>
 
-        <Link href="/cart" className=" hover:bg-gray-100">
-          <div className="relative">
+        <Link  href="/cart" className=" hover:bg-gray-100">
+          <div className="relative ">
             <span className="absolute text-xs rounded-full px-1 font-bold top-[-1rem] -right-2 bg-blue-700 text-white">
               10
             </span>
