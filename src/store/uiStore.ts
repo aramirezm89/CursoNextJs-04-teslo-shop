@@ -2,7 +2,6 @@ import { create } from "zustand";
 
 interface InitialState {
   openClose : boolean;
-
   toogleSidebar: () => void;
  
 }
