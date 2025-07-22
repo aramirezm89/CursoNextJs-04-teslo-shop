@@ -5,3 +5,7 @@ export const getInitialData = (category: string) => {
 
   return data;
 };
+
+export const getProductBySlug = (slug : string) =>{
+    return initialData.products.find((p) => p.slug === slug);
+}

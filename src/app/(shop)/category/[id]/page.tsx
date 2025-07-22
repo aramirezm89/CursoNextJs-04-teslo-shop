@@ -1,5 +1,5 @@
 
-import { getInitialData } from "@/app/helpers/getInitialData";
+import { getInitialData } from "@/app/helpers/product-helper";
 import { ProductGrid, Title } from "@/components";
 import { Category } from "@/interfaces";
 
