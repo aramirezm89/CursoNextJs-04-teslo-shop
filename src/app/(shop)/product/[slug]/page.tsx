@@ -1,6 +1,10 @@
-
 import { getProductBySlug } from "@/app/helpers/product-helper";
-import { ProductSlideShow, QuantitySelector, SizeSelector } from "@/components";
+import {
+  ProductSlideShow,
+  ProductSlideShowMobile,
+  QuantitySelector,
+  SizeSelector,
+} from "@/components";
 import { titleFont } from "@/config";
 
 interface CategoryProps {
@@ -15,12 +19,13 @@ export default async function ProductPage({ params }: CategoryProps) {
       {/*   slideShow */}
 
       <div className="col-span-1 md:col-span-2">
-        <ProductSlideShow images={product!.images} />
+        <ProductSlideShow  images={product!.images} />
+        <ProductSlideShowMobile images={product!.images} />
       </div>
 
       {/*        details */}
 
-      <div className="col-span-1 px-5 flex flex-col items-start justify-center">
+      <div className="col-span-1 px-5 flex flex-col items-start justify-start">
         <h1 className={`${titleFont.className} antialiased font-bold text-xl`}>
           {product!.title}
         </h1>
@@ -41,7 +46,7 @@ export default async function ProductPage({ params }: CategoryProps) {
 
         {/*     descripcion */}
         <h3 className="font-bold text-sm">Descripción</h3>
-        <p className="font-light text-sm">{product!.description}</p>
+        <p className="font-light text-sm pb-3">{product!.description}</p>
       </div>
     </div>
   );

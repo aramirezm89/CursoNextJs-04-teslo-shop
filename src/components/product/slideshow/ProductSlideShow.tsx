@@ -1,35 +1,35 @@
-'use client';
-import React, { useRef, useState } from "react";
+"use client";
+import React, { useState } from "react";
 // Import Swiper React components
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/free-mode';
-import 'swiper/css/navigation';
-import 'swiper/css/thumbs';
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/navigation";
+import "swiper/css/thumbs";
 
-import './slideShow.css';
+import "./slideShow.css";
 
 // import required modules
-import { Autoplay, FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import Image from "next/image";
+import { Autoplay, FreeMode, Navigation, Thumbs } from "swiper/modules";
 
-
-interface Props{
-    images : string[];
+interface Props {
+  images: string[];
 }
-export const ProductSlideShow = ({ images}: Props) => {
-      const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
-      console.log(images);
+export const ProductSlideShow = ({ images }: Props) => {
+  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
   return (
-    <div>
+    <div className="hidden md:block">
       <Swiper
-        style={{
-          "--swiper-navigation-color": "#fff",
-          "--swiper-pagination-color": "#fff",
-        } as React.CSSProperties}
-        loop={true}
+        style={
+          {
+            "--swiper-navigation-color": "#fff",
+            "--swiper-pagination-color": "#fff",
+          } as React.CSSProperties
+        }
+     
         spaceBetween={10}
         navigation={true}
         thumbs={{ swiper: thumbsSwiper }}
@@ -37,12 +37,13 @@ export const ProductSlideShow = ({ images}: Props) => {
           delay: 2500,
           disableOnInteraction: true,
         }}
-        modules={[FreeMode, Navigation, Thumbs,Autoplay]}
+        modules={[FreeMode, Navigation, Thumbs, Autoplay]}
         className="mySwiper2"
       >
         {images.map((image, index) => (
           <SwiperSlide key={index}>
             <Image
+              className="object-fill rounded-lg"
               src={`/products/${image}`}
               alt={`Product image ${index + 1}`}
               width={1024}
@@ -53,9 +54,9 @@ export const ProductSlideShow = ({ images}: Props) => {
       </Swiper>
       <Swiper
         onSwiper={setThumbsSwiper}
-        loop={true}
+     
         spaceBetween={10}
-        slidesPerView={4}
+        slidesPerView={images.length}
         freeMode={true}
         watchSlidesProgress={true}
         modules={[FreeMode, Navigation, Thumbs]}
@@ -64,6 +65,7 @@ export const ProductSlideShow = ({ images}: Props) => {
         {images.map((image, index) => (
           <SwiperSlide key={index}>
             <Image
+              className="object-fill rounded-lg"
               src={`/products/${image}`}
               alt={`Product image ${index + 1}`}
               width={1024}
