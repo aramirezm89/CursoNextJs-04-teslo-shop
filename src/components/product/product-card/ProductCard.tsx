@@ -21,8 +21,8 @@ export const ProductCard = ({product} : Props) => {
         <Image
           className="w-full object-cover rounded"
           src={`/products/${displayimage}`}
-          width={100}
-          height={100}
+          width={1024}
+          height={800}
           alt={product.title}
           onMouseOver={() => changeImage(1)}
           onMouseLeave={() => changeImage(0)}
@@ -30,7 +30,7 @@ export const ProductCard = ({product} : Props) => {
         />
       </figure>
       <div className="flex flex-col justify-start">
-        <Link href={`product/${product.slug}`} className="font-extrabold text-sm">{product.title}</Link>
+        <Link href={`/product/${product.slug}` } className="font-extrabold text-sm">{product.title}</Link>
         <p className="font-extrabold text-sm">${product.price}</p>
       </div>
     </div>
