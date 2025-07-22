@@ -1,19 +1,35 @@
-import { notFound } from "next/navigation";
 
+import { getInitialData } from "@/app/helpers/getInitialData";
+import { ProductGrid, Title } from "@/components";
+import { Category } from "@/interfaces";
 
-interface CategoryProps{
-params : Promise<{id:string}>
+interface CategoryProps {
+  params: Promise<{ id: Category }>;
 }
-export default async function CategoryPage({params}: CategoryProps) {
-  const {id} = await params;
 
-  if(id==='kids'){
+export default async function CategoryPage({ params }: CategoryProps) {
+  const { id } = await params;
+
+  /*   if(id==='kid'){
     notFound();
-  }
+  } */
+
+  const labels : Record<Category,string> = {
+    men: "Hombres",
+    women: "Mujeres",
+    kid: "Niños",
+    unisex : "todos"
+  };
+
+  const data = getInitialData(id);
 
   return (
-    <div>
-      <h1>Hello category page {id}</h1>
-    </div>
+    <>
+      <Title
+        title={`Productos de ${labels[id]}`}
+        subtitle="Todos los productos"
+      />
+      <ProductGrid products={data} />
+    </>
   );
 }

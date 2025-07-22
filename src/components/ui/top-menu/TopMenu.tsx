@@ -37,7 +37,7 @@ export const TopMenu = () => {
           Mujeres
         </Link>
         <Link
-          href="/category/kids"
+          href="/category/kid"
           className="m-2 p-2 rounded-md transition-all hover:bg-gray-100"
         >
           Niños
