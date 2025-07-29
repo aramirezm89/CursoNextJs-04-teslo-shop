@@ -9,7 +9,8 @@
 valores correspondientes
 4. Levantar la base de datos  ```docker-compose up -d```
 5. Correr las migraciones de prisma  ```npx prisma migrate dev```
-6. correr el proyecto ```npm run dev```
+6. Ejecutar seed de la base de datos  ```npm run prisma-seed```
+7. correr el proyecto ```npm run dev```
 
 
 ## Correr en prod
