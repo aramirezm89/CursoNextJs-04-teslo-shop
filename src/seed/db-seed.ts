@@ -11,6 +11,15 @@ async function main() {
   ]);
 
   // 2. Create categories
+
+  const categoriesData = initialData.categories.map((categoryName) =>{
+    return {
+      name: categoryName,
+    }
+  })
+  const categoriesBD = await prisma.category.createMany({data: categoriesData})
+
+  console.log("Categories created:", categoriesBD)
 }
 
 (() => {
