@@ -1,3 +1,5 @@
+
+
 interface SeedProduct {
     description: string;
     images: string[];
