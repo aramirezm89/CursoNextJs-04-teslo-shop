@@ -1,5 +1,6 @@
 "use client";
 
+import { generatePaginationNumbers } from "@/utils";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -13,6 +14,10 @@ export const Pagination = ({ totalPages }: Props) => {
   const pathName = usePathname();
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get("page")) ?? 1;
+  const allPages = generatePaginationNumbers(totalPages,currentPage);
+
+
+
 
   const createPageUrl = (pageNumber: number | string) => {
     //
