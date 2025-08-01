@@ -48,14 +48,14 @@ export const getPaginatedProductsWithImages = async ({
 
     //return object
     return {
+      totalPages,
+      currentPage: page,
       products: products.map((product) => {
         return {
           ...product,
           images: product.images.map((i) => i.url),
           categorie: categories.find((c) => c.id === product.categoryId)
             ?.name as Category,
-          totalPages,
-          currentPage: page,
         };
       }),
     };
