@@ -1,8 +1,7 @@
+import NotFoundPage from "@/components/ui/not-found/NotFoundPage";
 
 export default function NotfoundCategoryPage() {
   return (
-    <div>
-      <h1>product not found page</h1>
-    </div>
+     <NotFoundPage/>
   );
 }

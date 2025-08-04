@@ -1,5 +1,4 @@
-export const revalidate = 60; //the page is revalidated every minute
-
+export const revalidate = 60; 
 import { getPaginatedProductsWithImages } from "@/actions";
 import { Pagination, ProductGrid, Title } from "@/components";
 import { Gender } from "@/interfaces";
