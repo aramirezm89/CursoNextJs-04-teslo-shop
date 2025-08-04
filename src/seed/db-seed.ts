@@ -1,6 +1,5 @@
 import prisma from "../../lib/prisma";
 import { initialData } from "./seed";
-import { Category } from "@/interfaces";
 
 async function main() {
   // 1. Delete existing data
@@ -38,7 +37,7 @@ async function main() {
     const { type, images, ...productData } = p;
     return {
       ...productData,
-      categoryId: categoriesMap[p.type],
+      categoryId: categoriesMap[type],
     };
   });
 
