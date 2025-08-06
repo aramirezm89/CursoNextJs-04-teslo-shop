@@ -8,16 +8,35 @@ import {
 import { StockLabel } from "@/components/product/stock-label/StockLabel";
 import { titleFont } from "@/config";
 import clsx from "clsx";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 interface ProductProps {
   params: Promise<{ slug: string }>;
 }
+
+  export async function generateMetadata({params} : ProductProps) : Promise<Metadata>{
+    const { slug } = await params;
+    const product = await getProductBySlug(slug);
+
+    // optionally access and extend (rather than replace) parent metadata
+  /*   const previousImages = (await parent).openGraph?.images || []; */
+    return {
+      title: product?.title ?? "Producto no encontrado",
+      description: `${product?.description ?? ""}`,
+      openGraph: {
+        title: product?.title ?? "Producto no encontrado",
+        description: `${product?.description ?? ""}`,
+        images: [`/products/${product?.images[1]}`],
+      },
+    };
+  }
+
 export default async function ProductPage({ params }: ProductProps) {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
   const stock = await getInStockProduct(slug);
-console.log(stock === 0)
+  console.log(stock === 0);
   if (!product) {
     notFound();
   }
