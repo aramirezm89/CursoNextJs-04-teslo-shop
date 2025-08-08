@@ -8,8 +8,8 @@ export interface Product {
   slug: string;
   tags: string[];
   title: string;
- // type: Type;
- categorie : Category;
+  // type: Type;
+  categorie: Category;
   gender: Gender;
 }
 

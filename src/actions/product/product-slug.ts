@@ -2,6 +2,7 @@
 
 import { unstable_cache } from "next/cache";
 import prisma from "../../../lib/prisma";
+import { Category } from "@/interfaces";
 
 export const getProductBySlug = unstable_cache(
   async (slug: string) => {
@@ -11,13 +12,21 @@ export const getProductBySlug = unstable_cache(
         include: { images: { take: 2, select: { url: true } } },
       });
 
+ if(!product) return null;
+      
+    const category = await prisma.category.findFirst({
+      where: { id: product.categoryId }
+    });
       return {
         ...product,
         images: product!.images.map((p) => p.url),
         sizes: product?.sizes || [],
+        categorie: category?.name as Category,
       };
     } catch (error) {
       console.log(error);
+    
+  
     }
   },
   [`product-by-slug`],

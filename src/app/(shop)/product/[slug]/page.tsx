@@ -1,13 +1,11 @@
 import { getInStockProduct, getProductBySlug } from "@/actions";
 import {
   ProductSlideShow,
-  ProductSlideShowMobile,
-  QuantitySelector,
-  SizeSelector,
+  ProductSlideShowMobile
 } from "@/components";
+import { AddToCart } from "@/components/product/add-cart/AddToCart";
 import { StockLabel } from "@/components/product/stock-label/StockLabel";
 import { titleFont } from "@/config";
-import clsx from "clsx";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -36,10 +34,12 @@ export default async function ProductPage({ params }: ProductProps) {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
   const stock = await getInStockProduct(slug);
-  console.log(stock === 0);
+
   if (!product) {
     notFound();
   }
+
+
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -61,26 +61,11 @@ export default async function ProductPage({ params }: ProductProps) {
 
         {/*   selector tallas */}
 
-        <SizeSelector
-          availableSizes={product.sizes}
-          seletedSize={product.sizes[0]}
-        />
-
         {/*   selector cantidad */}
-        <QuantitySelector quantity={2} />
 
         {/*  button */}
-        <button
-          disabled={stock === 0}
-          className={clsx(
-            "bg-blue-600 hover:bg-blue-800 py-2 px-4 rounded transition-all my-5 cursor-pointer",
-            !stock
-              ? "pointer-events-none bg-transparent text-black"
-              : "text-white "
-          )}
-        >
-          {!stock ? "Producto agotado" : " Agregar al carrito"}
-        </button>
+
+       <AddToCart product={product} stock={stock} /> 
 
         {/*     descripcion */}
         <h3 className="font-bold text-sm">Descripción</h3>
