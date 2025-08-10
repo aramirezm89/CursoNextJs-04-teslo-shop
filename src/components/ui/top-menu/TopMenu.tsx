@@ -1,13 +1,22 @@
-'use client'
+"use client";
+
 import { titleFont } from "@/config";
+import { useCartStore } from "@/store/cart-store";
 import { useUiStore } from "@/store/uiStore";
 import Link from "next/link";
-import React from "react";
+import { useEffect, useState } from "react";
 import { IoCartOutline, IoSearchOutline } from "react-icons/io5";
 
 export const TopMenu = () => {
-    const uiStore = useUiStore();
-  
+  const [loaded, setLoaded] = useState(false);
+
+  const uiStore = useUiStore();
+  const cartStore = useCartStore();
+
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
+
   return (
     <nav className="flex py-5 justify-between items-center w-full ">
       {/* logo */}
@@ -51,16 +60,21 @@ export const TopMenu = () => {
           <IoSearchOutline size={24} />
         </Link>
 
-        <Link  href="/cart" className=" hover:bg-gray-100">
+        <Link href="/cart" className=" hover:bg-gray-100">
           <div className="relative ">
             <span className="absolute text-xs rounded-full px-1 font-bold top-[-1rem] -right-2 bg-blue-700 text-white">
-              10
+              {loaded &&
+                cartStore.getTotalItems() > 0 &&
+                cartStore.getTotalItems()}
             </span>
             <IoCartOutline size={24} />
           </div>
         </Link>
 
-        <button onClick={() => uiStore.toogleSidebar()} className="m-2 p-2 rounded-md transition-all hover:bg-gray-100 cursor-pointer">
+        <button
+          onClick={() => uiStore.toogleSidebar()}
+          className="m-2 p-2 rounded-md transition-all hover:bg-gray-100 cursor-pointer"
+        >
           Menu
         </button>
       </div>
