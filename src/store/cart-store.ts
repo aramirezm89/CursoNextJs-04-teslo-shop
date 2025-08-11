@@ -1,62 +1,86 @@
-import { CartProduct } from "@/interfaces";
+import { CartProduct, Size } from "@/interfaces";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface State {
   cart: CartProduct[];
   addProductToCart: (product: CartProduct) => void;
-  deleteProductToCart: (id: string) => void;
+  deleteProductToCart: (id: string, size: Size) => void;
   getTotalItems: () => number;
+  updateProductQuantity: (id: string, size: Size, quantity: number) => void;
 }
 
 export const useCartStore = create<State>()(
-  persist((set, get) => ({
-    cart: [],
+  persist(
+    (set, get) => ({
+      cart: [],
 
-    //methods
-    addProductToCart: (product: CartProduct) => {
-      const { cart } = get();
+      //methods
+      addProductToCart: (product: CartProduct) => {
+        const { cart } = get();
 
-      //1. check if cart contains a product with the same size selected
+        //1. check if cart contains a product with the same size selected
 
-      const productInCart = cart.some(
-        (item) => item.size === product.size && item.id === product.id
-      );
+        const productInCart = cart.some(
+          (item) => item.size === product.size && item.id === product.id
+        );
 
-      // insert product if productInCart is false
-      if (!productInCart) {
-        set({ cart: [...cart, product] });
-        return;
-      }
-
-      //2. I know the product exist with size... I have to increment it
-
-      const updatedCartProducts = cart.map((item) => {
-        if (item.size === product.size && item.id === product.id) {
-          return {
-            ...item,
-            quantity: item.quantity + product.quantity,
-          };
+        // insert product if productInCart is false
+        if (!productInCart) {
+          set({ cart: [...cart, product] });
+          return;
         }
-        return item;
-      });
 
-      set({ cart: updatedCartProducts });
-    },
-    deleteProductToCart: (id: string) => {
-      const { cart } = get();
+        //2. I know the product exist with size... I have to increment it
 
-      const productsInCart = cart.filter((p) => p.id !== id);
+        const updatedCartProducts = cart.map((item) => {
+          if (item.size === product.size && item.id === product.id) {
+            return {
+              ...item,
+              quantity: item.quantity + product.quantity,
+            };
+          }
+          return item;
+        });
 
-      set({ cart: productsInCart });
-    },
-    getTotalItems: () =>{
-      const {cart} = get();
-      const totalItem =  cart.reduce((acc, item ) => {
-        return acc + item.quantity
-      },0)
+        set({ cart: updatedCartProducts });
+      },
 
-      return totalItem
-    }
-  }),{name: 'shooping-cart'})
+      deleteProductToCart: (id: string, size: Size) => {
+        const { cart } = get();
+
+        const productsInCart = cart.filter(
+          (p) => !(p.id === id && p.size === size)
+        );
+
+        set({ cart: productsInCart });
+      },
+
+      getTotalItems: () => {
+        const { cart } = get();
+        const totalItem = cart.reduce((acc, item) => {
+          return acc + item.quantity;
+        }, 0);
+
+        return totalItem;
+      },
+
+      updateProductQuantity: (id: string, size: Size, quantity: number) => {
+        const { cart } = get();
+
+        const updateCart = cart.map((p) => {
+          if (p.id === id && p.size === size) {
+            p.quantity = quantity;
+            return p;
+          }
+          return p;
+        });
+
+        set({
+          cart: updateCart,
+        });
+      },
+    }),
+    { name: "shooping-cart" }
+  )
 );
