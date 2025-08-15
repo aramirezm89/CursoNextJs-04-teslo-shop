@@ -43,7 +43,7 @@ export const ProductsInCart = () => {
               onQuantityChange={(quantity) => cartStore.updateProductQuantity(product.id,product.size,quantity)}
             />
 
-            <button className="underline mt-3" onClick={() => cartStore.deleteProductToCart(product.id, product.size)}>Remover</button>
+            <button className="underline mt-3 cursor-pointer" onClick={() => cartStore.deleteProductToCart(product.id, product.size)}>Remover</button>
           </div>
         </div>
       ))}

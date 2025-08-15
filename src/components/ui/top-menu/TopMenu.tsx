@@ -60,9 +60,9 @@ export const TopMenu = () => {
           <IoSearchOutline size={24} />
         </Link>
 
-        <Link href="/cart" className=" hover:bg-gray-100">
+        <Link href={cartStore.getTotalItems() > 0 && loaded? '/cart' : '/empty'} className=" hover:bg-gray-100">
           <div className="relative ">
-            <span className="absolute text-xs rounded-full px-1 font-bold top-[-1rem] -right-2 bg-blue-700 text-white">
+            <span className="fade-in absolute text-xs rounded-full px-1 font-bold top-[-1rem] -right-2 bg-blue-700 text-white">
               {loaded &&
                 cartStore.getTotalItems() > 0 &&
                 cartStore.getTotalItems()}

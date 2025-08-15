@@ -8,6 +8,12 @@ interface State {
   deleteProductToCart: (id: string, size: Size) => void;
   getTotalItems: () => number;
   updateProductQuantity: (id: string, size: Size, quantity: number) => void;
+  getOrderSummary: () => {
+    subtotal: number;
+    tax: number;
+    total: number;
+    totalItems: number;
+  };
 }
 
 export const useCartStore = create<State>()(
@@ -50,7 +56,7 @@ export const useCartStore = create<State>()(
         const { cart } = get();
 
         const productsInCart = cart.filter(
-          (p) => !(p.id === id && p.size === size)
+          (p) => (p.id !== id || p.size !== size)
         );
 
         set({ cart: productsInCart });
@@ -68,18 +74,30 @@ export const useCartStore = create<State>()(
       updateProductQuantity: (id: string, size: Size, quantity: number) => {
         const { cart } = get();
 
-        const updateCart = cart.map((p) => {
+        const updatedCart = cart.map((p) => {
           if (p.id === id && p.size === size) {
-            p.quantity = quantity;
-            return p;
+            return{...p, quantity:quantity}
           }
           return p;
         });
 
         set({
-          cart: updateCart,
+          cart: updatedCart,
         });
       },
+
+      getOrderSummary: () =>{
+        const subtotal = get().cart.reduce((acc, item) => {
+          return acc + item.price * item.quantity;
+        }, 0);
+
+        const tax = subtotal * 0.15;
+        const total = subtotal + tax;
+
+        const totalItems = get().getTotalItems();
+
+        return { subtotal, tax, total, totalItems };
+      }
     }),
     { name: "shooping-cart" }
   )
