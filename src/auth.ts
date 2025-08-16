@@ -3,6 +3,8 @@ import type { Provider } from "next-auth/providers"
 import Credentials from "next-auth/providers/credentials"
 import Google from "next-auth/providers/google"
 import { signInSchema } from "./app/auth/validators/auth-validator"
+import { PrismaAdapter } from "@auth/prisma-adapter"
+import prisma from "../lib/prisma"
 
 const providers: Provider[] = [
   Credentials({
@@ -34,6 +36,7 @@ export const providerMap = providers
  
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers,
+  adapter: PrismaAdapter(prisma),
   pages: {
     signIn: "/auth/login",
     newUser: "/auth/new-account",
