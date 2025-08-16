@@ -7,7 +7,14 @@ async function main() {
     prisma.productImage.deleteMany(),
     prisma.product.deleteMany(),
     prisma.category.deleteMany(),
+    prisma.user.deleteMany(),
   ]);
+
+
+
+  const usersBD = await prisma.user.createMany({ data: initialData.users });
+
+  console.log("Users created:", usersBD);
 
   // 2. Create categories
 
