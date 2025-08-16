@@ -4,6 +4,8 @@ import { authenticate } from '@/actions'
 import { signIn } from 'next-auth/react'
 import { useActionState } from 'react'
 
+import { useSession } from "next-auth/react"
+
 
 export const LoginForm = () => {
 
@@ -18,6 +20,10 @@ export const LoginForm = () => {
         authenticate,
         undefined,
       );
+
+      const { data: session } = useSession()
+
+      console.log("session", session)
      
   return (
     <form
@@ -43,6 +49,8 @@ export const LoginForm = () => {
             isPending ? "Ingresando..." : "Ingresar"
            }
            </button>
+
+          
          </form>
   )
 }

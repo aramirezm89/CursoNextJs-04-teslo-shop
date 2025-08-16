@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { defaultFont } from "@/config";
 import "./globals.css";
+import { AuthProvider } from "./auth/auth-provider/AuthProvider";
 
 
 
@@ -18,12 +19,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+  <AuthProvider>
+      <html lang="en">
       <body
         className={`${defaultFont.className}  antialiased`}
       >
         {children}
       </body>
     </html>
+  </AuthProvider>
   );
 }
