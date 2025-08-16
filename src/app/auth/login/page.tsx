@@ -2,28 +2,30 @@ import { providerMap, signIn } from "@/auth";
 import { titleFont } from "@/config/fonts";
 import { AuthError } from "next-auth";
 import Link from "next/link";
+import { LoginForm } from "./ui/login-form";
 
-interface Props{
-  searchParams: Promise<{ callbackUrl: string | undefined }>
+interface Props {
+  searchParams: Promise<{ callbackUrl: string | undefined }>;
 }
-export default async function LoginPage({searchParams}: Props) {
-  const {callbackUrl} = await searchParams
+export default async function LoginPage({ searchParams }: Props) {
+  const { callbackUrl } = await searchParams;
   return (
     <main className="flex flex-col min-h-screen pt-32 sm:pt-52">
       <h1 className={`${titleFont.className} text-4xl mb-5`}>Ingresar</h1>
 
       <div className="flex flex-col">
-        <form
-        className="flex flex-col"
+        <LoginForm />
+       {/*  <form
+          className="flex flex-col"
           action={async (formData) => {
             "use server";
-            console.log("formData", formData)
+            console.log("formData", formData);
             try {
               await signIn("credentials", formData);
             } catch (error) {
               if (error instanceof AuthError) {
                 console.log(error);
-             /*    return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`); */
+                return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`);
               }
               throw error;
             }
@@ -31,20 +33,22 @@ export default async function LoginPage({searchParams}: Props) {
         >
           <label htmlFor="email">Correo electrónico</label>
           <input
-          name="email"
+            name="email"
             className="px-5 py-2 border bg-gray-200 rounded mb-5"
             type="email"
           />
 
           <label htmlFor="password">Contraseña</label>
           <input
-          name="password"
+            name="password"
             className="px-5 py-2 border bg-gray-200 rounded mb-5"
             type="password"
           />
 
-          <button type="submit" className="btn-primary">Ingresar</button>
-        </form>
+          <button type="submit" className="btn-primary">
+            Ingresar
+          </button>
+        </form> */}
 
         {/* divisor l ine */}
         <div className="flex items-center my-5">
@@ -65,7 +69,7 @@ export default async function LoginPage({searchParams}: Props) {
               "use server";
               try {
                 await signIn(provider.id, {
-                  redirectTo:  callbackUrl ?? "",
+                  redirectTo: callbackUrl ?? "",
                 });
               } catch (error) {
                 // Signin can fail for a number of reasons, such as the user

@@ -8,14 +8,13 @@ const providers: Provider[] = [
   Credentials({
     credentials: { password: { label: "Password", type: "password" }, email: { label: "Email", type: "email" } },
     authorize(c) {
-        console.log("c", c)
         const parsedCredentials =  signInSchema.safeParse(c)
         if (!parsedCredentials.success) return {
             error: parsedCredentials.error
         }
         const {email, password}  =  parsedCredentials.data
 
-        console.log("parsedCredentials", parsedCredentials)
+        console.log("logeado", parsedCredentials)
         return {email, password}
     },
   }),
