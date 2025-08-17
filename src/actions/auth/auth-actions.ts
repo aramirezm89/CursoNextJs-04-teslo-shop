@@ -1,12 +1,11 @@
-import prisma from "../../../lib/prisma";
 import bcrypt from "bcrypt";
-
+import prisma from "../../../lib/prisma";
 export const sigInWithCredentials = async (email: string, password: string) => {
   if (!email || !password) return null;
 
   const user = await prisma.user.findUnique({ where: { email } });
 
-  console.log("bd user", user)
+  console.log("bd user", user);
 
   if (!user) return null;
 

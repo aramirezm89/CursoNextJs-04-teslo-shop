@@ -1,56 +1,52 @@
-'use client'
+"use client";
 
-import { authenticate } from '@/actions'
-import { signIn } from 'next-auth/react'
-import { useActionState } from 'react'
-
-import { useSession } from "next-auth/react"
+import { authenticate } from "@/actions";
+import clsx from "clsx";
+import { useActionState } from "react";
+import { IoInformationOutline } from "react-icons/io5";
 
 
 export const LoginForm = () => {
-
-/*     const credentialsAction = (formData: FormData) => {
+  /*     const credentialsAction = (formData: FormData) => {
         signIn("credentials", {
             email: formData.get("email"),
             password: formData.get("password"),
         })
       }
  */
-      const [errorMessage, formAction, isPending] = useActionState(
-        authenticate,
-        undefined,
-      );
+  const [errorMessage, formAction, isPending] = useActionState(
+    authenticate,
+    undefined
+  );
 
-      const { data: session } = useSession()
-
-      console.log("session", session)
-     
   return (
-    <form
-           className="flex flex-col"
-           action={formAction}
-         >
-           <label htmlFor="email">Correo electrónico</label>
-           <input
-             name="email"
-             className="px-5 py-2 border bg-gray-200 rounded mb-5"
-             type="email"
-           />
- 
-           <label htmlFor="password">Contraseña</label>
-           <input
-             name="password"
-             className="px-5 py-2 border bg-gray-200 rounded mb-5"
-             type="password"
-           />
- 
-           <button disabled={isPending} type="submit" className="btn-primary">
-           {
-            isPending ? "Ingresando..." : "Ingresar"
-           }
-           </button>
+    <form className="flex flex-col" action={formAction}>
+      <label htmlFor="email">Correo electrónico</label>
+      <input
+        name="email"
+        className="px-5 py-2 border bg-gray-200 rounded mb-5"
+        type="email"
+      />
 
-          
-         </form>
+      <label htmlFor="password">Contraseña</label>
+      <input
+        name="password"
+        className="px-5 py-2 border bg-gray-200 rounded mb-5"
+        type="password"
+      />
+{
+  errorMessage && (
+  <div className="flex items-center gap-2 mb-5">
+  <IoInformationOutline size={20} className="text-red-500" />
+    <p className="text-red-500">Credenciales incorrectas</p>
+  </div>
   )
 }
+      <button disabled={isPending} type="submit" className={clsx(
+        isPending ? "btn-disabled cursor-not-allowed" : "btn-primary cursor-pointer"
+      )}>
+        {isPending ? "Ingresando..." : "Ingresar"}
+      </button>
+    </form>
+  );
+};

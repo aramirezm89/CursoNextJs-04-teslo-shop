@@ -1,4 +1,4 @@
-import { providerMap, signIn } from "@/auth";
+import { auth, providerMap, signIn, signOut } from "@/auth";
 import { titleFont } from "@/config/fonts";
 import { AuthError } from "next-auth";
 import Link from "next/link";
@@ -9,46 +9,14 @@ interface Props {
 }
 export default async function LoginPage({ searchParams }: Props) {
   const { callbackUrl } = await searchParams;
+  const session = await auth();
+  console.log("session", session);
   return (
     <main className="flex flex-col min-h-screen pt-32 sm:pt-52">
       <h1 className={`${titleFont.className} text-4xl mb-5`}>Ingresar</h1>
 
       <div className="flex flex-col">
         <LoginForm />
-       {/*  <form
-          className="flex flex-col"
-          action={async (formData) => {
-            "use server";
-            console.log("formData", formData);
-            try {
-              await signIn("credentials", formData);
-            } catch (error) {
-              if (error instanceof AuthError) {
-                console.log(error);
-                return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`);
-              }
-              throw error;
-            }
-          }}
-        >
-          <label htmlFor="email">Correo electrónico</label>
-          <input
-            name="email"
-            className="px-5 py-2 border bg-gray-200 rounded mb-5"
-            type="email"
-          />
-
-          <label htmlFor="password">Contraseña</label>
-          <input
-            name="password"
-            className="px-5 py-2 border bg-gray-200 rounded mb-5"
-            type="password"
-          />
-
-          <button type="submit" className="btn-primary">
-            Ingresar
-          </button>
-        </form> */}
 
         {/* divisor l ine */}
         <div className="flex items-center my-5">
@@ -68,6 +36,8 @@ export default async function LoginPage({ searchParams }: Props) {
             action={async () => {
               "use server";
               try {
+                // 👇 cerramos la sesión anterior (sin redirigir todavía)
+                await signOut({ redirect: false });
                 await signIn(provider.id, {
                   redirectTo: callbackUrl ?? "",
                 });
@@ -131,6 +101,7 @@ export default async function LoginPage({ searchParams }: Props) {
                 <span>Sign in with {provider.name}</span>
               </button>
             )}
+            <code>{JSON.stringify(session)}</code>
           </form>
         ))}
       </div>

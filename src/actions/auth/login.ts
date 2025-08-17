@@ -2,7 +2,7 @@
  
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
- 
+import { sleep } from '@/utils/sleep'; 
 // ...
  
 export async function authenticate(
@@ -10,6 +10,7 @@ export async function authenticate(
   formData: FormData,
 ) {
   try {
+    await sleep(1000)
     await signIn('credentials', formData);
   } catch (error) {
     if (error instanceof AuthError) {
