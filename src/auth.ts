@@ -28,11 +28,10 @@ const providers: Provider[] = [
 
       const { email, password } = parsedCredentials.data;
       const user = await sigInWithCredentials(email, password);
-      console.log("hola error", user);
+
       if (!user) {
         return null;
       }
-      console.log("logeado", user);
       return user;
     },
   }),
@@ -61,8 +60,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     newUser: "/auth/new-account",
   },
   callbacks: {
-    async signIn({ user }) {
-      console.log(user);
+    async signIn() {
       return true;
     },
 

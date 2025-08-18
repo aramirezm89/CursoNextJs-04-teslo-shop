@@ -10,9 +10,15 @@ export async function authenticate(
   formData: FormData,
 ) {
   try {
-    await sleep(1000)
-    await signIn('credentials', formData);
+ /*    await sleep(1000) */
+    await signIn('credentials', {
+      redirect: false,
+      ...Object.fromEntries(formData),
+    });
+    return "success";
+
   } catch (error) {
+    console.log(error)
     if (error instanceof AuthError) {
       switch (error.type) {
         case 'CredentialsSignin':

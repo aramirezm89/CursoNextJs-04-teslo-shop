@@ -7,12 +7,12 @@ export default async function AuthLayout({
  children: React.ReactNode;
 }) {
 
-  const session =  await auth();
-  console.log("session", session);
-  if(session){
+const session =  await auth();
+
+  if(session?.user){
     redirect("/");
   }
-
+ 
   return (
     <main className="min-h-screen flex justify-center ">
       <div className="w-full sm:w-[350px]">{children}</div>
