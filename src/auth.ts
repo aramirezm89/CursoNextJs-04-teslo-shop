@@ -3,10 +3,9 @@ import NextAuth, { DefaultSession } from "next-auth";
 import type { Provider } from "next-auth/providers";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
-import prisma from '../lib/prisma';
+import prisma from "../lib/prisma";
 import { sigInWithCredentials } from "./actions/auth/auth-actions";
 import { signInSchema } from "./app/auth/validators/auth-validator";
-
 
 declare module "next-auth" {
   interface Session {
@@ -25,14 +24,14 @@ const providers: Provider[] = [
     },
     async authorize(c) {
       const parsedCredentials = signInSchema.safeParse(c);
-      if (!parsedCredentials.success) return null
-      
+      if (!parsedCredentials.success) return null;
+
       const { email, password } = parsedCredentials.data;
       const user = await sigInWithCredentials(email, password);
-      console.log("hola error", user)
-      if(!user){
-      return null;
-      };
+      console.log("hola error", user);
+      if (!user) {
+        return null;
+      }
       console.log("logeado", user);
       return user;
     },
@@ -60,19 +59,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: {
     signIn: "/auth/login",
     newUser: "/auth/new-account",
-  },  callbacks: {
+  },
+  callbacks: {
     async signIn({ user }) {
       console.log(user);
       return true;
     },
-    
 
     async jwt({ token }) {
       const userDb = await prisma.user.findUnique({
         where: { email: token.email ?? "no-email" },
       });
 
- /*      if (userDb?.isActive === false) {
+      /*      if (userDb?.isActive === false) {
         throw Error("Usuario no activo");
       } */
       token.roles = userDb?.role;

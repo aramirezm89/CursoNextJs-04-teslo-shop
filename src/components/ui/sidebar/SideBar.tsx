@@ -1,5 +1,6 @@
 "use client";
 import { useUiStore } from "@/store/uiStore";
+import { signOut } from "next-auth/react"
 import Link from "next/link";
 import { IoCloseOutline, IoLogInOutline, IoLogOutOutline, IoPeopleOutline, IoPersonOutline, IoSearch, IoShirtOutline, IoTicketOutline } from "react-icons/io5";
 
@@ -7,6 +8,7 @@ import { IoCloseOutline, IoLogInOutline, IoLogOutOutline, IoPeopleOutline, IoPer
 
 export const SideBar = () => {
   const uiStore = useUiStore();
+
 
   return (
     <div
@@ -41,7 +43,8 @@ export const SideBar = () => {
         </div>
 
         <Link
-          href="/"
+          href="/profile"
+          onClick={() => uiStore.toogleSidebar()}
           className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
         >
           <IoPersonOutline size={30} />
@@ -63,7 +66,8 @@ export const SideBar = () => {
           <span className="ml-3 text-xl">Ingresar</span>
         </Link>
         <Link
-          href="/"
+          href="/auth/login"
+          onClick={() => signOut()}
           className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
         >
           <IoLogOutOutline size={30} />

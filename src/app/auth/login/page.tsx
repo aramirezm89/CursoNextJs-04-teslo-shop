@@ -1,4 +1,4 @@
-import { auth, providerMap, signIn, signOut } from "@/auth";
+import { providerMap, signIn, signOut } from "@/auth";
 import { titleFont } from "@/config/fonts";
 import { AuthError } from "next-auth";
 import Link from "next/link";
@@ -9,8 +9,6 @@ interface Props {
 }
 export default async function LoginPage({ searchParams }: Props) {
   const { callbackUrl } = await searchParams;
-  const session = await auth();
-  console.log("session", session);
   return (
     <main className="flex flex-col min-h-screen pt-32 sm:pt-52">
       <h1 className={`${titleFont.className} text-4xl mb-5`}>Ingresar</h1>
@@ -101,7 +99,6 @@ export default async function LoginPage({ searchParams }: Props) {
                 <span>Sign in with {provider.name}</span>
               </button>
             )}
-            <code>{JSON.stringify(session)}</code>
           </form>
         ))}
       </div>
