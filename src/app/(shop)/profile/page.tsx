@@ -12,7 +12,9 @@ export default async function ProfilePage() {
   return (
     <div>
       <Title title="Perfil" />
-
+      {session.user.emailVerified && new Date(session.user.emailVerified).toLocaleDateString("es-CL")}
+   
+  
       <pre>{JSON.stringify(session.user, null, 2)}</pre>
     </div>
   );

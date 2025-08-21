@@ -8,13 +8,6 @@ import { useActionState, useEffect } from "react";
 import { IoInformationOutline } from "react-icons/io5";
 
 export const LoginForm = () => {
-  /*     const credentialsAction = (formData: FormData) => {
-        signIn("credentials", {
-            email: formData.get("email"),
-            password: formData.get("password"),
-        })
-      }
- */
   const router = useRouter();
   const [errorMessage, formAction, isPending] = useActionState(
     authenticate,
@@ -25,7 +18,6 @@ export const LoginForm = () => {
 
   useEffect(() => {
     if (errorMessage === "success") {
-      console.log("success");
       update();
       router.replace("/");
     }

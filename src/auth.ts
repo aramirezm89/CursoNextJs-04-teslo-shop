@@ -12,6 +12,7 @@ declare module "next-auth" {
     user: {
       id: string;
       roles: string[];
+      emailVerified: Date | null;
     } & DefaultSession["user"];
   }
 }
@@ -69,16 +70,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         where: { email: token.email ?? "no-email" },
       });
 
-      /*      if (userDb?.isActive === false) {
-        throw Error("Usuario no activo");
-      } */
       token.roles = userDb?.role;
       token.id = userDb?.id;
+      token.emailVerified = userDb?.emailVerified;
       return token;
     },
     async session({ session, token }) {
       session.user.id = token.id as string;
       session.user.roles = token.roles as string[];
+      session.user.emailVerified = token.emailVerified as Date | null;
       return session;
     },
   },
