@@ -2,7 +2,6 @@
  
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
-import { sleep } from '@/utils/sleep'; 
 // ...
  
 export async function authenticate(
