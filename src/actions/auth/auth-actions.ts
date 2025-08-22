@@ -22,7 +22,6 @@ export const sigInWithCredentials = async (email: string, password: string) => {
 };
 
 export const registerUser = async (dataInputs: newAccountInputs) => {
-  console.log(dataInputs);
 
   try {
     if (!dataInputs.name || !dataInputs.email || !dataInputs.password)

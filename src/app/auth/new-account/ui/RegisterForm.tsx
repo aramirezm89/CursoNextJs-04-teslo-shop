@@ -36,8 +36,6 @@ export const RegisterForm = () => {
         router.replace("/");
       }
     }
-
-    console.log(res);
   };
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
