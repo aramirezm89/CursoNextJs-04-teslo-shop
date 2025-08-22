@@ -77,17 +77,22 @@ Una aplicación de e-commerce moderna desarrollada con Next.js 15, que incluye a
 
 La aplicación estará disponible en `http://localhost:3000`
 
-## 🐳 Configuración con Docker
+## 🐳 Base de Datos con Docker
 
-Para ejecutar todo el proyecto con Docker:
+El archivo `docker-compose.yml` está configurado para levantar únicamente la base de datos PostgreSQL:
 
 ```bash
-# Construir y ejecutar los contenedores
-docker-compose up --build
-
-# Ejecutar en segundo plano
+# Levantar la base de datos PostgreSQL
 docker-compose up -d
+
+# Ver los logs de la base de datos
+docker-compose logs postgres-db
+
+# Detener la base de datos
+docker-compose down
 ```
+
+**Nota**: La aplicación Next.js se ejecuta directamente con `npm run dev`, no está containerizada.
 
 ## 📦 Scripts Disponibles
 
