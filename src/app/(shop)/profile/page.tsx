@@ -3,6 +3,12 @@ import { Title } from "@/components";
 import { redirect } from "next/navigation";
 import React from "react";
 
+
+
+export const metadata = {
+ title: 'Perfil',
+ description: 'Perfil de usuario',
+};
 export default async function ProfilePage() {
   const session = await auth();
 

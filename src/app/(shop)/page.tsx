@@ -14,9 +14,6 @@ export default async function Home({ searchParams }: Props) {
   const { products, currentPage, totalPages } =
     await getPaginatedProductsWithImages({ page, take });
 
-  if (products.length === 0) {
-    redirect("/");
-  }
   return (
     <>
       <Title title="Tienda" subtitle="Todos los productos" />
