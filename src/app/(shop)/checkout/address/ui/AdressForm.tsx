@@ -5,6 +5,8 @@ import clsx from "clsx";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AddressInputs, addressSchema } from "./adress-form-validator";
 import { Country } from "@/interfaces";
+import { useAdressStore } from "@/store/adress-store";
+import { useEffect } from "react";
 
 interface Props {
   countries: Country[];
@@ -13,9 +15,8 @@ export const AdressForm = ({ countries }: Props) => {
   const {
     register,
     handleSubmit,
-    watch,
-
     formState: { errors, isValid },
+    reset,
   } = useForm<AddressInputs>({
     defaultValues: {
       // TODO: obtener datos de la base de datos
@@ -23,9 +24,18 @@ export const AdressForm = ({ countries }: Props) => {
     resolver: zodResolver(addressSchema),
   });
 
+  const setAdress = useAdressStore((state) => state.setAddress);
+  const address = useAdressStore((state) => state.address);
   const onSubmit: SubmitHandler<AddressInputs> = (data) => {
     console.log(data);
+    setAdress(data);
   };
+
+  useEffect(() => {
+    if (address.address) {
+      reset(address);
+    }
+  }, []);
 
   return (
     <form
