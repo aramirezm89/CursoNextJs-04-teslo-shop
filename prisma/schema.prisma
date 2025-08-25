@@ -37,15 +37,17 @@ enum Role {
 }
 
 model User {
-  id            String          @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String?
-  email         String          @unique
+  email         String    @unique
   emailVerified DateTime?
   password      String?
-  role          Role            @default(USER)
+  role          Role      @default(USER)
   image         String?
   accounts      Account[]
   sessions      Session[]
+
+  addresses     UserAddress?
   // Optional for WebAuthn support
   Authenticator Authenticator[]
 
@@ -142,6 +144,25 @@ model ProductImage {
 }
 
 model Country {
-  id   String @id
-  name String @unique
+  id          String        @id
+  name        String        @unique
+  userAddress UserAddress[]
+}
+
+model UserAddress {
+  id       String  @id @default(uuid())
+  name     String
+  lastName String
+  address  String
+  address2 String?
+  zip      String
+  city     String
+
+  phone String
+
+  country   Country @relation(fields: [countryId], references: [id])
+  countryId String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
 }

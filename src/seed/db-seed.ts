@@ -9,12 +9,13 @@ async function main() {
     prisma.product.deleteMany(),
     prisma.category.deleteMany(),
     prisma.user.deleteMany(),
+    prisma.userAddress.deleteMany(),
     prisma.country.deleteMany(),
   ]);
 
-const countriesBD = await prisma.country.createMany({ data:countries });
+  const countriesBD = await prisma.country.createMany({ data: countries });
 
-console.log("Countries created:", countriesBD);
+  console.log("Countries created:", countriesBD);
 
   const usersBD = await prisma.user.createMany({ data: initialData.users });
 
@@ -78,7 +79,6 @@ console.log("Countries created:", countriesBD);
   });
 
   console.log("Product images created:", productImageDb);
-
 }
 
 (() => {

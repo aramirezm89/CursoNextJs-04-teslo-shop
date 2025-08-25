@@ -1,41 +1,56 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import clsx from "clsx";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { AddressInputs, addressSchema } from "./adress-form-validator";
+import { deleteAddress, setUserAddress } from "@/actions";
 import { Country } from "@/interfaces";
 import { useAdressStore } from "@/store/adress-store";
+import { zodResolver } from "@hookform/resolvers/zod";
+import clsx from "clsx";
+import { useSession } from "next-auth/react";
 import { useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { AddressInputs, addressSchema } from "./adress-form-validator";
 
 interface Props {
   countries: Country[];
+  userStoredAddress?: AddressInputs;
 }
-export const AdressForm = ({ countries }: Props) => {
+export const AdressForm = ({ countries, userStoredAddress }: Props) => {
+  const { data: session } = useSession({ required: true });
+
+
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
     reset,
   } = useForm<AddressInputs>({
-    defaultValues: {
-      // TODO: obtener datos de la base de datos
-    },
+    defaultValues: userStoredAddress,
     resolver: zodResolver(addressSchema),
   });
 
   const setAdress = useAdressStore((state) => state.setAddress);
   const address = useAdressStore((state) => state.address);
-  const onSubmit: SubmitHandler<AddressInputs> = (data) => {
+
+  const onSubmit: SubmitHandler<AddressInputs> = async (data) => {
     console.log(data);
+    // set data to store
     setAdress(data);
+
+    // save data to database
+    if (data.rememberAddress) {
+      const res = await setUserAddress(data, session!.user.id);
+      console.log(res);
+    } else {
+      const res = await deleteAddress(session!.user?.id);
+      console.log(res);
+    }
   };
 
   useEffect(() => {
-    if (address.address) {
+    if (address.name) {
       reset(address);
     }
-  }, []);
+  }, [address]);
 
   return (
     <form
