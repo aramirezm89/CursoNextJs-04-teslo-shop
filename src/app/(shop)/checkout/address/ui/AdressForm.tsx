@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AddressInputs, addressSchema } from "./adress-form-validator";
+import { redirect } from "next/navigation";
 
 interface Props {
   countries: Country[];
@@ -16,7 +17,6 @@ interface Props {
 }
 export const AdressForm = ({ countries, userStoredAddress }: Props) => {
   const { data: session } = useSession({ required: true });
-
 
   const {
     register,
@@ -32,7 +32,6 @@ export const AdressForm = ({ countries, userStoredAddress }: Props) => {
   const address = useAdressStore((state) => state.address);
 
   const onSubmit: SubmitHandler<AddressInputs> = async (data) => {
-    console.log(data);
     // set data to store
     setAdress(data);
 
@@ -44,6 +43,9 @@ export const AdressForm = ({ countries, userStoredAddress }: Props) => {
       const res = await deleteAddress(session!.user?.id);
       console.log(res);
     }
+
+    // redirect to checkout
+    redirect("/checkout");
   };
 
   useEffect(() => {

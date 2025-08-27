@@ -1,10 +1,11 @@
 import Link from "next/link";
 
 import Image from "next/image";
-import { redirect } from "next/navigation";
 
-import { QuantitySelector, Title } from "@/components";
+import { Title } from "@/components";
 import { initialData } from "@/seed/seed";
+import { ProductsInCartCheckout } from "./ui/ProductsInCartCheckout";
+import { ResumeOrderCheckout } from "./ui/ResumeOrderCheckout";
 
 const productsInCart = [
   initialData.products[0],
@@ -29,7 +30,7 @@ export default function CheckoutPage() {
             </Link>
 
             {/* Items */}
-            {productsInCart.map((product) => (
+           {/*  {productsInCart.map((product) => (
               <div key={product.slug} className="flex mb-15">
                 <Image
                   src={`/products/${product.images[0]}`}
@@ -51,11 +52,13 @@ export default function CheckoutPage() {
                   <button className="underline mt-3">Remover</button>
                 </div>
               </div>
-            ))}
+            ))} */}
+
+            <ProductsInCartCheckout />
           </div>
 
           {/* Checkout - Resumen de orden */}
-          <div className="bg-white rounded-xl shadow-xl p-7 h-fit">
+     {/*      <div className="bg-white rounded-xl shadow-xl p-7 h-fit">
             <h2 className="text-2xl font-semibold  mb-2 ">
               Dirección de entrega
             </h2>
@@ -68,7 +71,7 @@ export default function CheckoutPage() {
               <p>tel: 867676676</p>
             </div>
 
-            {/*divider */}
+      
             <div className="border-b border-gray-300 my-5 rounded"></div>
             <h2 className="text-2xl mb-2 font-semibold">Resumen de orden</h2>
 
@@ -102,7 +105,8 @@ export default function CheckoutPage() {
                 Colocar orden
               </Link>
             </div>
-          </div>
+          </div> */}
+          <ResumeOrderCheckout />
         </div>
       </div>
     </div>
