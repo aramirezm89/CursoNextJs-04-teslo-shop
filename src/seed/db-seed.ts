@@ -5,6 +5,9 @@ import { countries } from "./seed-contry";
 async function main() {
   // 1. Delete existing data
   await Promise.all([
+    prisma.orderAddress.deleteMany(),
+    prisma.orderItem.deleteMany(),
+    prisma.order.deleteMany(),
     prisma.productImage.deleteMany(),
     prisma.product.deleteMany(),
     prisma.category.deleteMany(),

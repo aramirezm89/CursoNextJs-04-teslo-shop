@@ -46,6 +46,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  orders        Order[]
 
   addresses     UserAddress?
   // Optional for WebAuthn support
@@ -126,6 +127,7 @@ model Product {
   slug        String   @unique
   tags        String[] @default([])
   gender      Gender
+  orderItems OrderItem[]
 
   // Relations
   category   Category @relation(fields: [categoryId], references: [id])
@@ -147,6 +149,7 @@ model Country {
   id          String        @id
   name        String        @unique
   userAddress UserAddress[]
+  orderAddress OrderAddress[]
 }
 
 model UserAddress {
@@ -157,7 +160,6 @@ model UserAddress {
   address2 String?
   zip      String
   city     String
-
   phone String
 
   country   Country @relation(fields: [countryId], references: [id])
@@ -165,4 +167,61 @@ model UserAddress {
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
+}
+
+
+// Orders
+
+model Order{
+  id String @id @default(uuid())
+  subtotal Float @default(0)
+  tax Float @default(0)
+  total Float @default(0)
+  itemsInOrder Int @default(0)
+  isPaid Boolean @default(false)
+  paidAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orderItems OrderItem[]
+  orderAddress OrderAddress?
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+}
+
+model OrderItem{
+  id String @id @default(uuid())
+  quantity Int @default(1)
+  price Float @default(0)
+  size Size
+
+  // Relations
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)  
+  orderId String
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade) 
+  productId String
+}
+
+
+model OrderAddress{
+  id String @id @default(uuid())
+  name String
+  lastName String
+  address String
+  address2 String?
+  zip String
+  city String
+  phone String
+
+  // Relations
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)  
+  orderId String @unique
+  
+
+  country   Country @relation(fields: [countryId], references: [id])
+  countryId String
+  
 }

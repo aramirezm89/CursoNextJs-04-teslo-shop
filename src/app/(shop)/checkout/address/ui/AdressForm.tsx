@@ -32,8 +32,10 @@ export const AdressForm = ({ countries, userStoredAddress }: Props) => {
   const address = useAdressStore((state) => state.address);
 
   const onSubmit: SubmitHandler<AddressInputs> = async (data) => {
+
+    const {rememberAddress, ...addressData} = data;
     // set data to store
-    setAdress(data);
+    setAdress(addressData);
 
     // save data to database
     if (data.rememberAddress) {
