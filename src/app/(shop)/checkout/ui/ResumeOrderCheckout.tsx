@@ -1,5 +1,6 @@
 "use client";
 
+import { placeOrder } from "@/actions";
 import { useAdressStore } from "@/store/adress-store";
 import { useCartStore } from "@/store/cart-store";
 import { currencyFormat } from "@/utils";
@@ -30,7 +31,9 @@ export const ResumeOrderCheckout = () => {
           quantity: product.quantity,
           size: product.size
       }))
-      console.log(adressStore.address, productsToOrder)
+      
+      const res = await placeOrder(productsToOrder,adressStore.address)
+      console.log(res)
     } catch (error) {
       
     }finally{
