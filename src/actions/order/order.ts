@@ -15,83 +15,83 @@ export const placeOrder = async (
   products: ProductToOrder[],
   address: Address
 ) => {
-  try {
-    //verify if user session is valid
-    const session = await auth();
-    const userId = session?.user.id;
-    if (!userId) {
-      return {
-        ok: false,
-        error: "No autenticado",
-      };
-    }
+  //verify if user session is valid
+  const session = await auth();
+  const userId = session?.user.id;
+  if (!userId) {
+    return {
+      ok: false,
+      error: "No autenticado",
+    };
+  }
 
-    //get products info
-    //note: remember we can take 2 products with the same id
-    const productsInfo = await prisma.product.findMany({
-      where: {
-        id: {
-          in: products.map((p) => p.id),
-        },
+  //get products info
+  //note: remember we can take 2 products with the same id
+  const productsInfo = await prisma.product.findMany({
+    where: {
+      id: {
+        in: products.map((p) => p.id),
       },
-    });
+    },
+  });
 
-    // verify if products are in stock
-    const productsInStock = productsInfo.every((product) => {
-      return (
-        product.inStock >= products.find((p) => p.id === product.id)!.quantity
-      );
-    });
+  // calculate amount
 
-    if (!productsInStock) {
-      return {
-        ok: false,
-        error: "No hay stock de algunos productos",
-      };
-    }
-    // calculate amount
+  const itemsInOrder = products.reduce(
+    (acc, product) => acc + product.quantity,
+    0
+  );
+  const subtotal = products.reduce((acc, product) => {
+    const productInfo = productsInfo.find((p) => p.id === product.id);
+    return acc + productInfo!.price * product.quantity;
+  }, 0);
 
-    const itemsInOrder = products.reduce(
-      (acc, product) => acc + product.quantity,
-      0
-    );
-    const subtotal = products.reduce((acc, product) => {
-      const productInfo = productsInfo.find((p) => p.id === product.id);
-      return acc + productInfo!.price * product.quantity;
-    }, 0);
+  const tax = subtotal * 0.15;
+  const total = subtotal + tax;
 
-    const tax = subtotal * 0.15;
-    const total = subtotal + tax;
+  console.log(
+    products,
+    address,
+    userId,
+    productsInfo,
+    itemsInOrder,
+    subtotal,
+    tax,
+    total
+  );
 
-    console.log(
-      products,
-      address,
-      userId,
-      productsInfo,
-      itemsInOrder,
-      subtotal,
-      tax,
-      total
-    );
-
+  try {
     const prismaTransaction = await prisma.$transaction(async (tx) => {
       // 1. update prouduct stock
 
-      /*       const productsUpdated = products.map((p) =>
-        tx.product.update({
+      const updatedProductPromises = productsInfo.map(async (p) => {
+        //get quantity of product to update
+        const productQuantity = products
+          .filter((p2) => p2.id === p.id)
+          .reduce((acc, item) => acc + item.quantity, 0);
+
+        if (productQuantity === 0)
+          throw new Error(`La cantidad del producto ${p.title} no puede ser 0`);
+
+        return await tx.product.update({
           where: { id: p.id },
           data: {
             inStock: {
-              decrement: p.quantity,
+              decrement: productQuantity,
             },
           },
-          select:{
-            id:true,
-            
-          }
-        })
-      );
- */
+        });
+      });
+
+      const updatedProducts = await Promise.all(updatedProductPromises);
+
+      //verify if products are in stock
+
+      for (const product of updatedProducts) {
+        if (product.inStock < 0) {
+          throw new Error(`${product.title} no tiene stock suficiente`);
+        }
+      }
       // 2 create order and details
 
       const order = await tx.order.create({
@@ -156,19 +156,21 @@ export const placeOrder = async (
         ok: true,
         order,
         orderAddress,
+        updatedProducts,
       };
     });
 
     return {
       ok: true,
       order: prismaTransaction.order,
-      orderAddress: prismaTransaction.orderAddress,
+      prismaTx: prismaTransaction,
     };
-  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
     console.log(error);
     return {
       ok: false,
-      error: "Error al crear la orden",
+      error: error.message,
     };
   }
 };
