@@ -174,10 +174,10 @@ model UserAddress {
 
 model Order{
   id String @id @default(uuid())
-  subtotal Float @default(0)
-  tax Float @default(0)
-  total Float @default(0)
-  itemsInOrder Int @default(0)
+  subtotal Float
+  tax Float 
+  total Float
+  itemsInOrder Int 
   isPaid Boolean @default(false)
   paidAt DateTime?
   createdAt DateTime @default(now())
@@ -193,8 +193,8 @@ model Order{
 
 model OrderItem{
   id String @id @default(uuid())
-  quantity Int @default(1)
-  price Float @default(0)
+  quantity Int 
+  price Float 
   size Size
 
   // Relations

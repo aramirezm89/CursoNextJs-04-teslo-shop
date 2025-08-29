@@ -33,7 +33,7 @@ export const ResumeOrderCheckout = () => {
       }))
       
       const res = await placeOrder(productsToOrder,adressStore.address)
-      console.log(res)
+      console.log(res.order,res.orderAddress)
     } catch (error) {
       
     }finally{
