@@ -44,8 +44,11 @@ export const PlaceOrder = () => {
     }
 
     //clean cart
-    cartStore.clearCart();
+
     router.replace('/orders/'+ res.order!.id);
+   setTimeout(() => {
+    cartStore.clearCart();
+   }, 1000);
   };
   return (
     <div className="bg-white rounded-xl shadow-xl p-7 h-fit">

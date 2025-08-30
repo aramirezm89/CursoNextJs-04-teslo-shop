@@ -39,11 +39,11 @@ export const AdressForm = ({ countries, userStoredAddress }: Props) => {
 
     // save data to database
     if (data.rememberAddress) {
-      const res = await setUserAddress(data, session!.user.id);
-      console.log(res);
+      await setUserAddress(data, session!.user.id);
+   
     } else {
-      const res = await deleteAddress(session!.user?.id);
-      console.log(res);
+      await deleteAddress(session!.user?.id);
+
     }
 
     // redirect to checkout

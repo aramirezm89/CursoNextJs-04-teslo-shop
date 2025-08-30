@@ -1,8 +1,5 @@
 import { getInStockProduct, getProductBySlug } from "@/actions";
-import {
-  ProductSlideShow,
-  ProductSlideShowMobile
-} from "@/components";
+import { ProductSlideShow, ProductSlideShowMobile } from "@/components";
 import { AddToCart } from "@/components/product/add-cart/AddToCart";
 import { StockLabel } from "@/components/product/stock-label/StockLabel";
 import { titleFont } from "@/config";
@@ -13,22 +10,24 @@ interface ProductProps {
   params: Promise<{ slug: string }>;
 }
 
-  export async function generateMetadata({params} : ProductProps) : Promise<Metadata>{
-    const { slug } = await params;
-    const product = await getProductBySlug(slug);
+export async function generateMetadata({
+  params,
+}: ProductProps): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
 
-    // optionally access and extend (rather than replace) parent metadata
+  // optionally access and extend (rather than replace) parent metadata
   /*   const previousImages = (await parent).openGraph?.images || []; */
-    return {
+  return {
+    title: product?.title ?? "Producto no encontrado",
+    description: `${product?.description ?? ""}`,
+    openGraph: {
       title: product?.title ?? "Producto no encontrado",
       description: `${product?.description ?? ""}`,
-      openGraph: {
-        title: product?.title ?? "Producto no encontrado",
-        description: `${product?.description ?? ""}`,
-        images: [`/products/${product?.images[1]}`],
-      },
-    };
-  }
+      images: [`/products/${product?.images[1]}`],
+    },
+  };
+}
 
 export default async function ProductPage({ params }: ProductProps) {
   const { slug } = await params;
@@ -38,8 +37,6 @@ export default async function ProductPage({ params }: ProductProps) {
   if (!product) {
     notFound();
   }
-
-
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -57,7 +54,7 @@ export default async function ProductPage({ params }: ProductProps) {
         <h1 className={`${titleFont.className} antialiased font-bold text-xl`}>
           {product.title}
         </h1>
-        <p className="text-lg">${Number(product!.price).toFixed(2)}</p>
+        <p className="text-lg">${Number(product.price).toFixed(2)}</p>
 
         {/*   selector tallas */}
 
@@ -65,11 +62,11 @@ export default async function ProductPage({ params }: ProductProps) {
 
         {/*  button */}
 
-       <AddToCart product={product} stock={stock} /> 
+        <AddToCart product={product} stock={stock} />
 
         {/*     descripcion */}
         <h3 className="font-bold text-sm">Descripción</h3>
-        <p className="font-light text-sm pb-3">{product!.description}</p>
+        <p className="font-light text-sm pb-3">{product.description}</p>
       </div>
     </div>
   );

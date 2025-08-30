@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { CartValidator } from "./ui/CartValidator";
 
 export default async function CheckoutLayout({
  children
@@ -7,13 +8,15 @@ export default async function CheckoutLayout({
  children: React.ReactNode;
 }) {
 
-
   const session = await auth();
 
   if (!session) {
     redirect("/auth/login");
   }
+  
   return (
-   <div>{children}</div>
+    <CartValidator>
+      <div>{children}</div>
+    </CartValidator>
   );
 }
