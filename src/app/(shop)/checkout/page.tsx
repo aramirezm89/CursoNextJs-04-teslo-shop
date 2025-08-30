@@ -1,17 +1,10 @@
 import Link from "next/link";
 
-import Image from "next/image";
 
 import { Title } from "@/components";
-import { initialData } from "@/seed/seed";
+import { PlaceOrder } from "./ui/PlaceOrder";
 import { ProductsInCartCheckout } from "./ui/ProductsInCartCheckout";
-import { ResumeOrderCheckout } from "./ui/ResumeOrderCheckout";
 
-const productsInCart = [
-  initialData.products[0],
-  initialData.products[1],
-  initialData.products[2],
-];
 
 export default function CheckoutPage() {
   // redirect('/empty');
@@ -36,7 +29,7 @@ export default function CheckoutPage() {
 
           {/* Checkout - Resumen de orden */}
 
-          <ResumeOrderCheckout />
+          <PlaceOrder />
         </div>
       </div>
     </div>

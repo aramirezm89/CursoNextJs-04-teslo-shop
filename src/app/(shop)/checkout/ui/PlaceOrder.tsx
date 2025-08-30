@@ -5,41 +5,48 @@ import { useAdressStore } from "@/store/adress-store";
 import { useCartStore } from "@/store/cart-store";
 import { currencyFormat } from "@/utils";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export const ResumeOrderCheckout = () => {
+export const PlaceOrder = () => {
+
+  const router = useRouter();
   const cartStore = useCartStore();
   const adressStore = useAdressStore();
   const cart = useCartStore((state) => state.cart);
 
-  const [loaded, setloaded] = useState(false)
-  const [isPlacingOrder, setisPlacingOrder] = useState(false)
+  const [loaded, setloaded] = useState(false);
+  const [error, seterror] = useState("");
+  const [isPlacingOrder, setisPlacingOrder] = useState(false);
   useEffect(() => {
-    setloaded(true)
-  }, [])
-  
-  if(!loaded){
-    return <p>Loading...</p>
+    setloaded(true);
+  }, []);
+
+  if (!loaded) {
+    return <p>Loading...</p>;
   }
 
-  const onPlaceOrder =  async () => {
-    setisPlacingOrder(true)
-    try {
+  const onPlaceOrder = async () => {
+    setisPlacingOrder(true);
 
-      const productsToOrder = cart.map(product => ({
-          id: product.id,
-          quantity: product.quantity,
-          size: product.size
-      }))
-      
-      const res = await placeOrder(productsToOrder,adressStore.address)
-      console.log(res)
-    } catch (error) {
-      
-    }finally{
-      setisPlacingOrder(false)
+    const productsToOrder = cart.map((product) => ({
+      id: product.id,
+      quantity: product.quantity,
+      size: product.size,
+    }));
+
+    const res = await placeOrder(productsToOrder, adressStore.address);
+
+    if (!res.ok) {
+      setisPlacingOrder(false);
+      seterror(res.error || "Error al crear la orden");
+      return;
     }
-  }
+
+    //clean cart
+    cartStore.clearCart();
+    router.replace('/orders/'+ res.order!.id);
+  };
   return (
     <div className="bg-white rounded-xl shadow-xl p-7 h-fit">
       <h2 className="text-2xl font-semibold  mb-2 ">Dirección de entrega</h2>
@@ -61,13 +68,19 @@ export const ResumeOrderCheckout = () => {
         <span className="text-right">{cartStore.cart.length} artículos</span>
 
         <span>Subtotal</span>
-        <span className="text-right">{currencyFormat(cartStore.getOrderSummary().subtotal)}</span>
+        <span className="text-right">
+          {currencyFormat(cartStore.getOrderSummary().subtotal)}
+        </span>
 
         <span>Impuestos (15%)</span>
-        <span className="text-right">{currencyFormat(cartStore.getOrderSummary().tax)}</span>
+        <span className="text-right">
+          {currencyFormat(cartStore.getOrderSummary().tax)}
+        </span>
 
         <span className="mt-5 text-2xl font-semibold">Total:</span>
-        <span className="mt-5 text-2xl text-right font-semibold">{currencyFormat(cartStore.getOrderSummary().total)}</span>
+        <span className="mt-5 text-2xl text-right font-semibold">
+          {currencyFormat(cartStore.getOrderSummary().total)}
+        </span>
       </div>
 
       <div className="mt-5 mb-2 w-full">
@@ -84,16 +97,14 @@ export const ResumeOrderCheckout = () => {
             .
           </span>
         </p>
-      {/*   <p className="text-red-500">Error de creación de orden</p> */}
-        <button className={
-          clsx(
-            "flex btn-primary justify-center",
-            {
-              "btn-disabled": isPlacingOrder || adressStore.address.name.length === 0,
-              
-            }
-          )
-        } onClick={onPlaceOrder}>
+     <p className="text-red-500 mb-5">{error}</p>
+        <button
+          className={clsx("flex btn-primary justify-center", {
+            "btn-disabled":
+              isPlacingOrder || adressStore.address.name.length === 0,
+          })}
+          onClick={onPlaceOrder}
+        >
           Colocar orden
         </button>
       </div>
