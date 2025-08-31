@@ -192,7 +192,12 @@ export const getOrderById = async (id: string) => {
           include: {
             product: {
               include: {
-                images: true,
+                images: {
+                  take: 1,
+                  select: {
+                    url: true,
+                  },
+                },
               },
             },
           },

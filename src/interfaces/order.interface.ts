@@ -23,9 +23,9 @@ export interface ProductInOrder {
 }
 
 export interface Image {
-    id:        number;
+
     url:       string;
-    productId: string;
+   
 }
 
 
