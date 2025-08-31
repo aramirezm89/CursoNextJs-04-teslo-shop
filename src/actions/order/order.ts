@@ -229,3 +229,72 @@ export const getOrderById = async (id: string) => {
     };
   }
 };
+
+
+
+
+interface PaginationOptions {
+  page?: number;
+  take?: number;
+
+}
+
+
+export const getOrdersByUser = async ({
+  take = 10,
+  page = 1,
+}: PaginationOptions) =>{
+  const session = await auth();
+  if (!session) {
+    return {
+      ok: false,
+      error: "No autenticado",
+    };
+  }
+  try {
+    const orders = await prisma.order.findMany({
+      take,
+      skip: (page - 1) * take,
+      where: {
+        userId: session.user.id,
+      },
+      include:{
+        orderAddress:{
+          select:{
+            name:true,
+            lastName:true,
+            country:true,
+           
+          }
+        }
+      }
+    });
+    
+    const totalOrders = await prisma.order.count({
+      where: {
+        userId: session.user.id,
+      },
+    });
+    
+    const totalPages = Math.ceil(totalOrders / take);
+
+
+    
+     
+    return {
+      ok: true,
+      totalPages,
+      currentPage: page,
+      orders,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      ok: false,
+      error: "Error al obtener las ordenes",
+      totalPages: 0,
+      currentPage: 1,
+    };
+  }
+
+}

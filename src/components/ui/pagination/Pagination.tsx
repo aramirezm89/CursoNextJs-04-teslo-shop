@@ -50,7 +50,7 @@ export const Pagination = ({ totalPages }: Props) => {
               className={clsx(
                 "page-link relative block py-1.5 px-3  border-0 bg-transparent outline-none transition-all duration-300 rounded  hover:text-gray-800 hover:bg-gray-200 focus:shadow-none",
                 currentPage === 1
-                  ? "text-gray-200 pointer-events-none"
+                  ? "text-gray-100 pointer-events-none"
                   : "text-gray-800"
               )}
               href={createPageUrl(currentPage - 1)}
@@ -115,7 +115,7 @@ export const Pagination = ({ totalPages }: Props) => {
               className={clsx(
                 "page-link relative block py-1.5 px-3  border-0 bg-transparent outline-none transition-all duration-300 rounded  hover:text-gray-800 hover:bg-gray-200 focus:shadow-none",
                 currentPage === totalPages
-                  ? "text-gray-200 pointer-events-none"
+                  ? "text-gray-100 pointer-events-none"
                   : "text-gray-800"
               )}
             >
