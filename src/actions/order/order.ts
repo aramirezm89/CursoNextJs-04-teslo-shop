@@ -173,3 +173,54 @@ export const placeOrder = async (
     };
   }
 };
+
+export const getOrderById = async (id: string) => {
+  const session = await auth();
+  if (!session) {
+    return {
+      ok: false,
+      error: "No autenticado",
+    };
+  }
+  try {
+    const order = await prisma.order.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        orderItems: {
+          include: {
+            product: {
+              include: {
+                images: true,
+              },
+            },
+          },
+        },
+        orderAddress: {
+          include: {
+            country: true,
+          },
+        },
+      },
+    });
+
+    if (order?.userId !== session.user.id) {
+      console.log("No tienes permiso para ver esta orden");
+      return {
+        ok: false,
+        error: "No tienes permiso para ver esta orden",
+      };
+    }
+    return {
+      ok: true,
+      order,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      ok: false,
+      error: "Error al obtener la orden",
+    };
+  }
+};
