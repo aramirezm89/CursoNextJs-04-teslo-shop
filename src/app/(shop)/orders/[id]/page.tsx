@@ -15,7 +15,6 @@ export default async function OrderPage({ params }: Props) {
   const { id } = await params;
 
   const { ok, order } = await getOrderById(id);
-  console.log(order);
 
   //verificar si la orden corresponde a un usuario valido
 
