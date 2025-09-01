@@ -189,6 +189,9 @@ model Order{
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
+  //transaction
+  transactionId String?
+
 }
 
 model OrderItem{
