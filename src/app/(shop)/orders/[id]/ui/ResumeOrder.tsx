@@ -1,7 +1,9 @@
 "use client";
 
+import { PaypalButtons } from "@/components";
 import { Order, OrderAdress } from "@/interfaces";
 import { currencyFormat } from "@/utils";
+import { PayPalButtons } from "@paypal/react-paypal-js";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { IoCartOutline } from "react-icons/io5";
@@ -59,7 +61,7 @@ export const ResumeOrder = ({ orderAddress, orderResume }: Props) => {
       </div>
 
             <div className="mt-5 mb-2 w-full">
-              <div
+{/*               <div
                 className={clsx(
                   "flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5",
                   {
@@ -69,10 +71,13 @@ export const ResumeOrder = ({ orderAddress, orderResume }: Props) => {
                 )}
               >
                 <IoCartOutline size={30} />
-                {/*   <span className="mx-2 ">Pendiente de pago</span> */}
+             
                 <span className="mx-2 ">{orderResume.isPaid ? "Pagada" : "Pendiente de pago"}</span>
-              </div>
+              </div> */}
+                  <PaypalButtons/>
             </div>
+
+        
  
     </div>
   );

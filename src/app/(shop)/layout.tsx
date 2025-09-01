@@ -7,24 +7,24 @@ export default async function ShopLayout({
 }: {
   children: React.ReactNode;
 }) {
- 
   const session = await auth();
 
-/*   if(session?.user){
+  /*   if(session?.user){
     console.log(session)
     redirect("/");
   }
  */
 
-  
   return (
     <div>
       <SideBar />
       <main className="min-h-screen grid grid-rows-[auto_1fr_auto] px-1 md:px-[40px]">
         <TopMenu />
-        <div>{children}</div>
+        <div className="mb-10">{children}</div>
+      
+          <Footer />
+       
       </main>
-      <Footer />
     </div>
   );
 }

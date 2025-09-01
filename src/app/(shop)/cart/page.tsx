@@ -1,5 +1,11 @@
 import Link from "next/link";
 
+
+
+export const metadata = {
+ title: 'Cart',
+ description: 'Cart of products',
+};
 import { OrderSummary, ProductsInCart, Title } from "@/components";
 
 export default function CartPage() {

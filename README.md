@@ -54,6 +54,8 @@ Una aplicación de e-commerce moderna desarrollada con Next.js 15, que incluye a
    - `DATABASE_URL`: URL de conexión a PostgreSQL (se genera automáticamente)
    - `AUTH_SECRET`: Clave secreta para NextAuth.js
    - `AUTH_GOOGLE_ID` y `AUTH_GOOGLE_SECRET`: Para OAuth con Google (opcional)
+   - `NEXT_PUBLIC_PAYPAL_CLIENT_ID`: ID del cliente de PayPal (público)
+   - `PAYPAL_CLIENT_SECRET`: Clave secreta de PayPal (privada)
 
 4. **Levantar la base de datos**
    ```bash

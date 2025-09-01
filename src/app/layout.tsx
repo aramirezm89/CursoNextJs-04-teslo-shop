@@ -1,9 +1,7 @@
-import type { Metadata } from "next";
+import { Providers } from "@/components/providers/Providers";
 import { defaultFont } from "@/config";
+import type { Metadata } from "next";
 import "./globals.css";
-import { AuthProvider } from "./auth/auth-provider/AuthProvider";
-
-
 
 export const metadata: Metadata = {
   title: {
@@ -19,14 +17,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-  <AuthProvider>
-      <html lang="en">
-      <body
-        className={`${defaultFont.className}  antialiased`}
-      >
-        {children}
+    <html lang="en">
+      <body className={`${defaultFont.className}  antialiased`}>
+        <Providers>{children}</Providers>
       </body>
     </html>
-  </AuthProvider>
   );
 }
