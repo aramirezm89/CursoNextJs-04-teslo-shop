@@ -74,7 +74,7 @@ export const ResumeOrder = ({ orderAddress, orderResume }: Props) => {
              
                 <span className="mx-2 ">{orderResume.isPaid ? "Pagada" : "Pendiente de pago"}</span>
               </div> */}
-                  <PaypalButtons/>
+                  <PaypalButtons orderId={orderResume.id} amount={orderResume.total}/>
             </div>
 
         

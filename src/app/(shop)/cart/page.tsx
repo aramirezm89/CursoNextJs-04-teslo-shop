@@ -10,8 +10,8 @@ import { OrderSummary, ProductsInCart, Title } from "@/components";
 
 export default function CartPage() {
   return (
-    <div className="flex justify-center items-center mb-72 px-10 sm:px-0">
-      <div className="flex flex-col w-[1000px]">
+    <div className="flex justify-center items-center mb-72 px-2 sm:px-0">
+      <div className="flex flex-col w-[100%] max-w-[1000px]">
         <Title title="Carrito" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
