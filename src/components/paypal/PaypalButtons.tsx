@@ -6,7 +6,7 @@ import {
   OnApproveData,
   OnApproveActions,
 } from "@paypal/paypal-js";
-import { setTransactionId } from "@/actions";
+import { paypalCheckPayment, setTransactionId } from "@/actions";
 
 interface Props {
   orderId: string;
@@ -65,8 +65,14 @@ export const PaypalButtons = ({ orderId, amount }: Props) => {
     }
 
     const order = await actions.order.capture(); // ✅ Aquí se captura el pago
-    console.log("Pago completado:", order);
+
+    if(!order) return;
+    
+    await paypalCheckPayment(order.id!);
+    console.log("Pago completado");
   };
+
+  
   return (
     <div>
       <PayPalButtons createOrder={createOrder} onApprove={onApprove} />

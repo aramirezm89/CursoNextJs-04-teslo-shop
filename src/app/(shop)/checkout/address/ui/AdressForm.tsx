@@ -38,11 +38,15 @@ export const AdressForm = ({ countries, userStoredAddress }: Props) => {
     setAdress(addressData);
 
     // save data to database
-    if (data.rememberAddress) {
+    if (rememberAddress) {
       await setUserAddress(data, session!.user.id);
    
     } else {
-      await deleteAddress(session!.user?.id);
+     const res = await deleteAddress(session!.user?.id);
+
+     if(!res.ok) {
+      console.log(res.error)
+     }
 
     }
 
@@ -52,6 +56,7 @@ export const AdressForm = ({ countries, userStoredAddress }: Props) => {
 
   useEffect(() => {
     if (address.name) {
+      //rest form with address data on address store
       reset(address);
     }
   }, [address]);

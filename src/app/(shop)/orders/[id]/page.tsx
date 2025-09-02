@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { IoCartOutline } from "react-icons/io5";
 import { ProductsInOrder } from "./ui/ProductsInOrders";
 import { ResumeOrder } from "./ui/ResumeOrder";
+import { ClearCart } from './ui/CleanCart';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -58,6 +59,7 @@ export default async function OrderPage({ params }: Props) {
             orderAddress={order!.orderAddress!}
             orderResume={order!}
           />
+          <ClearCart />
         </div>
       </div>
     </div>

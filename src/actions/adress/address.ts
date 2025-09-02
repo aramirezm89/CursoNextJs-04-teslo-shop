@@ -64,12 +64,32 @@ const createOrReplaceAddress = async (address: Address, userId: string) => {
 
 
 export const deleteAddress = async (userId: string) => {
+
+  const userAdress = await prisma.userAddress.findUnique({
+    where: {
+      userId,
+    },
+  });
+
+
+
+  if(!userAdress) return {
+    ok: false,
+    deletedAddress: null,
+    error: "Usuario aun no registra una direccion",
+  };
   try {
     const deletedAddress = await prisma.userAddress.delete({
       where: {
         userId,
       },
     });
+
+    if(!deletedAddress) return {
+      ok: false,
+      deletedAddress: null,
+      error: "Error no se pudo eliminar la direccion",
+    };
     return {
       ok: true,
       deletedAddress,

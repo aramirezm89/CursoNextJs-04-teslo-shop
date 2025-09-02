@@ -36,7 +36,7 @@ export const PlaceOrder = () => {
     }));
 
     const res = await placeOrder(productsToOrder, adressStore.address);
-
+console.log(res);
     if (!res.ok) {
       setisPlacingOrder(false);
       seterror(res.error || "Error al crear la orden");
@@ -46,9 +46,9 @@ export const PlaceOrder = () => {
     //clean cart
 
     router.replace('/orders/'+ res.order!.id);
-   setTimeout(() => {
+ /*   setTimeout(() => {
     cartStore.clearCart();
-   }, 1000);
+   }, 4000); */
   };
   return (
     <div className="bg-white rounded-xl shadow-xl p-7 h-fit">
