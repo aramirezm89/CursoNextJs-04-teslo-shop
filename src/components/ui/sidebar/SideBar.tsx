@@ -119,8 +119,9 @@ export const SideBar = () => {
 
         {data?.user?.roles.includes("ADMIN") ?(
           <>
+          <div className="text-xl font-bold">Opciones de Adminsitrador</div>
             <Link
-              href="/"
+              href=""
               className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
             >
               <IoShirtOutline size={30} />
@@ -128,7 +129,7 @@ export const SideBar = () => {
             </Link>
 
             <Link
-              href="/"
+              href="/admin/orders"
               className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
             >
               <IoTicketOutline size={30} />
