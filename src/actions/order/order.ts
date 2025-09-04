@@ -212,7 +212,7 @@ export const getOrderById = async (id: string) => {
       },
     });
 
-    if (order?.userId !== session.user.id) {
+    if (order?.userId !== session.user.id && !session.user.roles.includes("ADMIN")) {
       console.log("No tienes permiso para ver esta orden");
       return {
         ok: false,
