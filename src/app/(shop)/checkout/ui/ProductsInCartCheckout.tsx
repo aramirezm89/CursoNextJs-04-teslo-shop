@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 export const ProductsInCartCheckout = () => {
   const [loaded, setloaded] = useState(false);
-  const cartStore = useCartStore();
+  const cart = useCartStore((state) => state.cart);
 
   useEffect(() => {
     setloaded(true);
@@ -18,8 +18,8 @@ export const ProductsInCartCheckout = () => {
   }
   return (
     <>
-      {cartStore.cart.map((product) => (
-        <div key={product.slug} className="flex mb-15">
+      {cart.map((product) => (
+        <div key={product.slug + product.size} className="flex mb-15">
           <Image
             src={`/products/${product.image}`}
             width={100}

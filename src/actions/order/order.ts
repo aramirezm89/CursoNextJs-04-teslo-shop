@@ -34,6 +34,8 @@ export const placeOrder = async (
     },
   });
 
+
+  console.log("productsInfo placing order", productsInfo);
   // calculate amount
 
   const itemsInOrder = products.reduce(

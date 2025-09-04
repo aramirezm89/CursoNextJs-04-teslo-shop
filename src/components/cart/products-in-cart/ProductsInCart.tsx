@@ -9,7 +9,9 @@ import { useEffect, useState } from "react";
 export const ProductsInCart = () => {
  
   const [loaded, setloaded] = useState(false);
-  const cartStore = useCartStore();
+  const cart = useCartStore((state) => state.cart);
+  const updateProductQuantity = useCartStore((state) => state.updateProductQuantity);
+  const deleteProductToCart = useCartStore((state) => state.deleteProductToCart);
 
   useEffect(() => {
     setloaded(true)
@@ -21,7 +23,7 @@ export const ProductsInCart = () => {
   }
   return (
     <>
-      {cartStore.cart.map((product) => (
+      {cart.map((product) => (
         <div key={product.slug + product.size} className="flex mb-15">
           <Image
             src={`/products/${product.image}`}
@@ -40,10 +42,10 @@ export const ProductsInCart = () => {
             <p>${product.price}</p>
             <QuantitySelector
               quantity={product.quantity}
-              onQuantityChange={(quantity) => cartStore.updateProductQuantity(product.id,product.size,quantity)}
+              onQuantityChange={(quantity) => updateProductQuantity(product.id,product.size,quantity)}
             />
 
-            <button className="underline mt-3 cursor-pointer" onClick={() => cartStore.deleteProductToCart(product.id, product.size)}>Remover</button>
+            <button className="underline mt-3 cursor-pointer" onClick={() => deleteProductToCart(product.id, product.size)}>Remover</button>
           </div>
         </div>
       ))}

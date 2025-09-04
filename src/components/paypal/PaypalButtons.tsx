@@ -33,7 +33,7 @@ export const PaypalButtons = ({ orderId, amount }: Props) => {
       intent: "CAPTURE",
       purchase_units: [
         {
-          /*    invoice_id: "123456", */
+         invoice_id: orderId, 
           amount: {
             currency_code: "USD",
             value: roundedAmount.toString(),

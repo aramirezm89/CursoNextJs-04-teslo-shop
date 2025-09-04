@@ -190,7 +190,9 @@ model Order{
   userId String
 
   //transaction
-  transactionId String?
+  transactionId String?  @unique
+
+ @@index([transactionId])
 
 }
 

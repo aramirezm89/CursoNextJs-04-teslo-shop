@@ -55,6 +55,7 @@ Una aplicación de e-commerce moderna desarrollada con Next.js 15, que incluye a
    - `AUTH_SECRET`: Clave secreta para NextAuth.js
    - `AUTH_GOOGLE_ID` y `AUTH_GOOGLE_SECRET`: Para OAuth con Google (opcional)
    - `NEXT_PUBLIC_PAYPAL_CLIENT_ID`: ID del cliente de PayPal (público)
+   - `PAYPAL_CLIENT_ID`: ID del cliente de PayPal (El mismo que NEXT_PUBLIC_PAYPAL_CLIENT_ID pero este es el que se usa en el lado servidor)
    - `PAYPAL_CLIENT_SECRET`: Clave secreta de PayPal (privada)
 
 4. **Levantar la base de datos**

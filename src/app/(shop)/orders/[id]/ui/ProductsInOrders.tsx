@@ -24,7 +24,7 @@ export const ProductsInOrder = ({ orderProducts }: Props) => {
   return (
     <>
       {orderProducts.map((orderProduct) => (
-        <div key={orderProduct.product.id} className="flex mb-15">
+        <div key={orderProduct.product.id + orderProduct.size} className="flex mb-15">
           <Image
             src={`/products/${orderProduct.product.images[0].url}`}
             width={100}
