@@ -12,7 +12,6 @@ interface Props {
 export default async function OrdersPage({ searchParams }: Props) {
   const { page, take } = await searchParams;
   const { ok, orders = [], totalPages } = await getOrdersAdmin({ page, take });
-  console.log(orders);
 
   if (!ok) {
     redirect("/auth/login");

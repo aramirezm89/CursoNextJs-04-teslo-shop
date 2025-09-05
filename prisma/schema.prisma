@@ -47,13 +47,12 @@ model User {
   accounts      Account[]
   sessions      Session[]
   orders        Order[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   addresses     UserAddress?
   // Optional for WebAuthn support
   Authenticator Authenticator[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model Account {
@@ -118,16 +117,16 @@ model Category {
 }
 
 model Product {
-  id          String   @id @default(uuid())
+  id          String      @id @default(uuid())
   title       String
   description String
   inStock     Int
-  price       Float    @default(0)
-  sizes       Size[]   @default([])
-  slug        String   @unique
-  tags        String[] @default([])
+  price       Float       @default(0)
+  sizes       Size[]      @default([])
+  slug        String      @unique
+  tags        String[]    @default([])
   gender      Gender
-  orderItems OrderItem[]
+  orderItems  OrderItem[]
 
   // Relations
   category   Category @relation(fields: [categoryId], references: [id])
@@ -146,9 +145,9 @@ model ProductImage {
 }
 
 model Country {
-  id          String        @id
-  name        String        @unique
-  userAddress UserAddress[]
+  id           String         @id
+  name         String         @unique
+  userAddress  UserAddress[]
   orderAddress OrderAddress[]
 }
 
@@ -160,7 +159,7 @@ model UserAddress {
   address2 String?
   zip      String
   city     String
-  phone String
+  phone    String
 
   country   Country @relation(fields: [countryId], references: [id])
   countryId String
@@ -169,64 +168,59 @@ model UserAddress {
   userId String @unique
 }
 
-
 // Orders
 
-model Order{
-  id String @id @default(uuid())
-  subtotal Float
-  tax Float 
-  total Float
-  itemsInOrder Int 
-  isPaid Boolean @default(false)
-  paidAt DateTime?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  orderItems OrderItem[]
+model Order {
+  id           String        @id @default(uuid())
+  subtotal     Float
+  tax          Float
+  total        Float
+  itemsInOrder Int
+  isPaid       Boolean       @default(false)
+  paidAt       DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  orderItems   OrderItem[]
   orderAddress OrderAddress?
 
   // Relations
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
   //transaction
-  transactionId String?  @unique
+  transactionId String? @unique
 
- @@index([transactionId])
-
+  @@index([transactionId])
 }
 
-model OrderItem{
-  id String @id @default(uuid())
-  quantity Int 
-  price Float 
-  size Size
+model OrderItem {
+  id       String @id @default(uuid())
+  quantity Int
+  price    Float
+  size     Size
 
   // Relations
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)  
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId String
 
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade) 
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String
 }
 
-
-model OrderAddress{
-  id String @id @default(uuid())
-  name String
+model OrderAddress {
+  id       String  @id @default(uuid())
+  name     String
   lastName String
-  address String
+  address  String
   address2 String?
-  zip String
-  city String
-  phone String
+  zip      String
+  city     String
+  phone    String
 
   // Relations
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)  
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId String @unique
-  
 
   country   Country @relation(fields: [countryId], references: [id])
   countryId String
-  
 }

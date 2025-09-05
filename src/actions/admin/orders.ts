@@ -15,7 +15,7 @@ export const getOrdersAdmin = async ({
 
 
   const session = await auth();
-  console.log("getOrdersAdmin",session?.user.roles);
+
   if (!session) {
     return {
       ok: false,
