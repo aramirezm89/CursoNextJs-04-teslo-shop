@@ -1,5 +1,6 @@
 "use client";
 
+import { changeUserRole } from "@/actions/admin/users";
 import { Pagination } from "@/components";
 import { User } from "@/interfaces";
 import { useMemo, useState } from "react";
@@ -52,8 +53,19 @@ export const UsersTable = ({ users, totalPages }: Props) => {
     }
   };
 
+
+  const [message, setMessage] = useState<string | null>(null);
+
+  const handleChangeUserRole = async (userId: string, role: "ADMIN" | "USER") => {
+    const { ok, message } = await changeUserRole(userId, role);
+    setMessage(message);
+    setTimeout(() => {
+      setMessage(null);
+    }, 3000);
+  };
   return (
     <>
+    <p className="text-red-500">{message}</p>
       <table className="min-w-full">
         <thead className="bg-gray-200 border-b">
           <tr>
@@ -97,11 +109,11 @@ export const UsersTable = ({ users, totalPages }: Props) => {
               </td>
               <td className="flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 <select
-                  className="text-sm text-gray-900"
+                  className="text-sm w-full p-2 text-gray-900 border border-black rounded-md"
                   value={user.role}
-                  onChange={(e) => console.log(e.target.value)}
+                  onChange={(e) => handleChangeUserRole(user.id, e.target.value as "ADMIN" | "USER")}
                 >
-                  <option value="USER">USER</option>
+                  <option  value="USER">USER</option>
                   <option value="ADMIN">ADMIN</option>
                 </select>
               </td>
