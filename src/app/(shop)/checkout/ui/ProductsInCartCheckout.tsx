@@ -21,7 +21,7 @@ export const ProductsInCartCheckout = () => {
       {cart.map((product) => (
         <div key={product.slug + product.size} className="flex mb-15">
           <Image
-            src={`/products/${product.image}`}
+            src={`/products/${product.image.url}`}
             width={100}
             height={100}
             style={{

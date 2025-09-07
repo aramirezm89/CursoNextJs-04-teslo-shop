@@ -43,8 +43,8 @@ export default async function ProductPage({ params }: ProductProps) {
       {/*   slideShow */}
 
       <div className="col-span-1 md:col-span-2">
-        <ProductSlideShow images={product.images} />
-        <ProductSlideShowMobile images={product.images} />
+        <ProductSlideShow images={product.images.map((image) => image.url)} />
+        <ProductSlideShowMobile images={product.images.map((image) => image.url)} />
       </div>
 
       {/*        details */}

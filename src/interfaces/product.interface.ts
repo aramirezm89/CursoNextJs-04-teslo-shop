@@ -1,7 +1,7 @@
 export interface Product {
   id: string;
   description: string;
-  images: string[];
+  images: {url: string, id: number}[];
   inStock: number;
   price: number;
   sizes: Size[];
@@ -20,7 +20,7 @@ export interface CartProduct{
   price: number;
   quantity: number;
   size: Size;
-  image: string;
+  image: {url: string, id: number};
 
 }
 export type Size = "XS" | "S" | "M" | "L" | "XL" | "XXL" | "XXXL";

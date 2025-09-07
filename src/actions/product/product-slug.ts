@@ -9,7 +9,7 @@ export const getProductBySlug = unstable_cache(
     try {
       const product = await prisma.product.findFirst({
         where: { slug },
-        include: { images: { take: 2, select: { url: true } } },
+        include: { images: { take: 2, select: { url: true ,id: true } } },
       });
 
  if(!product) return null;
@@ -19,7 +19,7 @@ export const getProductBySlug = unstable_cache(
     });
       return {
         ...product,
-        images: product!.images.map((p) => p.url),
+        images: product!.images,
         sizes: product?.sizes || [],
         categorie: category?.name as Category,
       };
