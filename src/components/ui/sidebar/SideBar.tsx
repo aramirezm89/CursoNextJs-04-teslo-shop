@@ -121,7 +121,7 @@ export const SideBar = () => {
           <>
           <div className="text-xl font-bold">Opciones de Adminsitrador</div>
             <Link
-              href=""
+              href="/admin/products"
               onClick={() => uiStore.toogleSidebar()}
               className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
             >
