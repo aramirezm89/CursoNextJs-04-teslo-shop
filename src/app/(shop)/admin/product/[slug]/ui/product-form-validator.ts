@@ -30,12 +30,18 @@ export const productSchema = z.object({
     .string()
     .min(10, { message: "La descripción debe tener al menos 10 caracteres" }),
 
+    inStock: z
+    .number({ message: "El stock debe ser un número" })
+    .min(0, { message: "El stock debe ser mayor a 0" }),
+   
+
   price: z
     .number({ message: "El precio debe ser un número" })
-    .positive({ message: "El precio debe ser mayor a 0" }),
+    .min(0, { message: "El precio debe ser mayor a 0" }),
+   
 
   tags: z.string().min(1, { message: "Debe ingresar al menos un tag" }),
-  gender: z.string().min(1, { message: "Debe seleccionar un género" }),
+  gender: z.enum(["men", "women", "kid", "unisex"]),
 
   categoryId: z.string().min(1, { message: "Debe seleccionar una categoría" }),
 

@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { Size } from "../../../../../../../generated/prisma";
 import Image from "next/image";
+import { createUpdateProduct } from "@/actions";
 
 interface Props {
   product: Product | undefined | null;
@@ -29,13 +30,45 @@ export const ProductForm = ({ product, categories }: Props) => {
     handleSubmit,
     formState: { errors, isValid },
     reset,
+    setValue,
+    getValues,
+    watch,
   } = useForm<ProductFormData>({
     defaultValues: defaultValues,
     resolver: zodResolver(productSchema),
   });
 
+  watch("sizes");
+  
+  const onSizeChange = (size: Size) => {
+    const sizes = getValues("sizes");
+    if (sizes.includes(size)) {
+     return setValue(
+        "sizes",
+        sizes.filter((s) => s !== size),{
+          shouldValidate: true,
+        }
+      );
+    }
+    return setValue("sizes", [...sizes, size], {
+      shouldValidate: true,
+    });
+  };
+
+
   const onSubmit = async (data: ProductFormData) => {
     console.log(data);
+    const {images, ...productData} = data;
+
+    const formData = new FormData();
+    Object.entries(productData).forEach(([key, value]) => {
+      formData.append(key, value.toString());
+    });
+
+    formData.append("id", product?.id ?? "");
+    const { ok} = await createUpdateProduct(formData);
+
+    console.log(ok)
   };
   return (
     <form
@@ -81,12 +114,26 @@ export const ProductForm = ({ product, categories }: Props) => {
           )}
         </div>
 
-        <div className="flex flex-col mb-2">
-          <span>Price</span>
+     <div className="flex flex-col mb-2">
+          <span>En stock</span>
           <input
             type="number"
             className="p-2 border rounded-md bg-gray-200"
-            {...register("price")}
+            {...register("inStock", { valueAsNumber: true })}
+          />
+          {errors.inStock && (
+            <p className="text-red-500 text-sm">{errors.inStock.message}</p>
+          )}
+        </div>
+ 
+        <div className="flex flex-col mb-2">
+          <span>Precio</span>
+          <input
+            type="number"
+            step="0.01"
+           
+            className="p-2 border rounded-md bg-gray-200"
+            {...register("price", { valueAsNumber: true })}
           />
           {errors.price && (
             <p className="text-red-500 text-sm">{errors.price.message}</p>
@@ -142,7 +189,7 @@ export const ProductForm = ({ product, categories }: Props) => {
 
         <button
           type="submit"
-          disabled={!isValid}
+        disabled={!isValid} 
           className={clsx(" w-full", {
             "btn-disabled": !isValid,
             "btn-primary": isValid,
@@ -160,20 +207,25 @@ export const ProductForm = ({ product, categories }: Props) => {
           <div className="flex flex-wrap">
             {sizes.map((size) => (
               // bg-blue-500 text-white <--- si está seleccionado
-              <div
+              <button
+                type="button"
                 key={size}
+                onClick={() => onSizeChange(size as Size)}
                 className={clsx(
-                  "flex items-center justify-center w-10 h-10 mr-2 border rounded-md",
+                  "flex items-center justify-center w-10 h-10 mr-2 border rounded-md transition-all cursor-pointer",
                   {
-                    "bg-blue-500 text-white": product?.sizes.includes(
+                    "bg-blue-500 text-white": getValues("sizes").includes(
                       size as Size
                     ),
                   }
                 )}
               >
                 <span>{size}</span>
-              </div>
+              </button>
             ))}
+            {errors.sizes && (
+              <p className="text-red-500 text-sm">{errors.sizes.message}</p>
+            )}
           </div>
 
           <div className="flex flex-col mb-2">
@@ -192,16 +244,22 @@ export const ProductForm = ({ product, categories }: Props) => {
 
           <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-2">
             {product?.images.map((image) => (
-              <div  key={image.id}>
+              <div key={image.id}>
                 <Image
-                 className="w-full h-full object-cover rounded-t-xl"
+                  className="w-full h-full object-cover rounded-t-xl"
                   src={`/products/${image.url}`}
                   alt={product.title}
                   width={200}
                   height={200}
                 />
 
-                <button onClick={() => console.log(image.id,image.url)} type="button" className="btn-danger w-full rounded-b-xl">Eliminar</button>
+                <button
+                  onClick={() => console.log(image.id, image.url)}
+                  type="button"
+                  className="btn-danger w-full rounded-b-xl"
+                >
+                  Eliminar
+                </button>
               </div>
             ))}
           </div>
