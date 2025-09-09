@@ -16,6 +16,7 @@ export default async function ProductPage({ params }: Props) {
     getCategoriesAdmin(),
   ]);
 
+  console.log(product)
   //todo: new
 
   if (!product && slug !== "new") {
@@ -26,7 +27,7 @@ export default async function ProductPage({ params }: Props) {
   return (
     <div>
       <Title title={title} />
-      <ProductForm product={product } categories={categories} />
+      <ProductForm product={product || null } categories={categories} />
     </div>
   );
 }

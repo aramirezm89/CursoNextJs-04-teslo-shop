@@ -39,13 +39,15 @@ export const ProductForm = ({ product, categories }: Props) => {
   });
 
   watch("sizes");
-  
+
   const onSizeChange = (size: Size) => {
-    const sizes = getValues("sizes");
+    const sizes = getValues("sizes") || [];
+
     if (sizes.includes(size)) {
-     return setValue(
+      return setValue(
         "sizes",
-        sizes.filter((s) => s !== size),{
+        sizes.filter((s) => s !== size),
+        {
           shouldValidate: true,
         }
       );
@@ -55,10 +57,9 @@ export const ProductForm = ({ product, categories }: Props) => {
     });
   };
 
-
   const onSubmit = async (data: ProductFormData) => {
     console.log(data);
-    const {images, ...productData} = data;
+    const { images, ...productData } = data;
 
     const formData = new FormData();
     Object.entries(productData).forEach(([key, value]) => {
@@ -66,9 +67,9 @@ export const ProductForm = ({ product, categories }: Props) => {
     });
 
     formData.append("id", product?.id ?? "");
-    const { ok} = await createUpdateProduct(formData);
+    const { ok } = await createUpdateProduct(formData);
 
-    console.log(ok)
+    console.log(ok);
   };
   return (
     <form
@@ -114,7 +115,7 @@ export const ProductForm = ({ product, categories }: Props) => {
           )}
         </div>
 
-     <div className="flex flex-col mb-2">
+        <div className="flex flex-col mb-2">
           <span>En stock</span>
           <input
             type="number"
@@ -125,13 +126,12 @@ export const ProductForm = ({ product, categories }: Props) => {
             <p className="text-red-500 text-sm">{errors.inStock.message}</p>
           )}
         </div>
- 
+
         <div className="flex flex-col mb-2">
           <span>Precio</span>
           <input
             type="number"
             step="0.01"
-           
             className="p-2 border rounded-md bg-gray-200"
             {...register("price", { valueAsNumber: true })}
           />
@@ -189,7 +189,7 @@ export const ProductForm = ({ product, categories }: Props) => {
 
         <button
           type="submit"
-        disabled={!isValid} 
+          disabled={!isValid}
           className={clsx(" w-full", {
             "btn-disabled": !isValid,
             "btn-primary": isValid,
@@ -214,7 +214,7 @@ export const ProductForm = ({ product, categories }: Props) => {
                 className={clsx(
                   "flex items-center justify-center w-10 h-10 mr-2 border rounded-md transition-all cursor-pointer",
                   {
-                    "bg-blue-500 text-white": getValues("sizes").includes(
+                    "bg-blue-500 text-white": getValues("sizes")?.includes(
                       size as Size
                     ),
                   }

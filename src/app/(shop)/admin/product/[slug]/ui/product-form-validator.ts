@@ -40,7 +40,7 @@ export const productSchema = z.object({
     .min(0, { message: "El precio debe ser mayor a 0" }),
    
 
-  tags: z.string().min(1, { message: "Debe ingresar al menos un tag" }),
+  tags: z.string().regex(/^[a-zA-Z0-9,\s]*$/).min(1, { message: "Debe ingresar al menos un tag" }),
   gender: z.enum(["men", "women", "kid", "unisex"]),
 
   categoryId: z.string().min(1, { message: "Debe seleccionar una categoría" }),
