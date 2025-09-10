@@ -5,6 +5,7 @@ import { useCartStore } from "@/store/cart-store";
 import { currencyFormat } from "@/utils";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { ProductImage } from "@/components";
 
 interface Props {
   orderProducts: OrderItem[];
@@ -25,8 +26,8 @@ export const ProductsInOrder = ({ orderProducts }: Props) => {
     <>
       {orderProducts.map((orderProduct) => (
         <div key={orderProduct.product.id + orderProduct.size} className="flex mb-15">
-          <Image
-            src={`/products/${orderProduct.product.images[0].url}`}
+          <ProductImage
+            src={orderProduct.product.images[0]?.url}
             width={100}
             height={100}
             style={{

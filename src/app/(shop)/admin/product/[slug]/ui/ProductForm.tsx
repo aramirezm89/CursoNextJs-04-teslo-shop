@@ -1,26 +1,28 @@
 "use client";
 
+import { createUpdateProduct } from "@/actions";
+import { ProductImage } from "@/components";
 import { CategoryEntity, Product } from "@/interfaces";
-import { useForm } from "react-hook-form";
-import { ProductFormData, productSchema } from "./product-form-validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 import { Size } from "../../../../../../../generated/prisma";
-import Image from "next/image";
-import { createUpdateProduct } from "@/actions";
+import { ProductFormData, productSchema } from "./product-form-validator";
 
 interface Props {
-  product: Product | undefined | null;
+  product: Partial<Product>;
   categories: CategoryEntity[];
 }
 
 const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
 
 export const ProductForm = ({ product, categories }: Props) => {
+  const router = useRouter();
   const defaultValues = product
     ? {
         ...product,
-        tags: product.tags.join(","),
+        tags: product.tags?.join(",") ?? "",
         sizes: product.sizes ?? [],
         //todo: images
       }
@@ -66,10 +68,16 @@ export const ProductForm = ({ product, categories }: Props) => {
       formData.append(key, value.toString());
     });
 
-    formData.append("id", product?.id ?? "");
-    const { ok } = await createUpdateProduct(formData);
+    if (product.id) {
+      formData.append("id", product.id);
+    }
+    const { ok, productToCreateUpdate } = await createUpdateProduct(formData);
 
-    console.log(ok);
+   if(!ok){
+    return alert("Error al actualizar el producto");
+   }
+
+router.replace(`/admin/product/${productToCreateUpdate?.slug}`);
   };
   return (
     <form
@@ -234,7 +242,7 @@ export const ProductForm = ({ product, categories }: Props) => {
               type="file"
               multiple
               className="p-2 border rounded-md bg-gray-200"
-              accept="image/png, image/jpeg"
+              accept="image/png, image/jpeg, image/avif"
               {...register("images")}
             />
             {errors.images && (
@@ -243,25 +251,35 @@ export const ProductForm = ({ product, categories }: Props) => {
           </div>
 
           <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-2">
-            {product?.images.map((image) => (
-              <div key={image.id}>
-                <Image
-                  className="w-full h-full object-cover rounded-t-xl"
-                  src={`/products/${image.url}`}
-                  alt={product.title}
-                  width={200}
-                  height={200}
-                />
+            {product && product.images!.length > 0 ? (
+              product?.images?.map((image) => (
+                <div key={image.id}>
+                  <ProductImage
+                    className="w-full h-full object-cover rounded-t-xl"
+                    src={image?.url}
+                    alt={product?.title ?? ""}
+                    width={200}
+                    height={200}
+                  />
 
-                <button
-                  onClick={() => console.log(image.id, image.url)}
-                  type="button"
-                  className="btn-danger w-full rounded-b-xl"
-                >
-                  Eliminar
-                </button>
-              </div>
-            ))}
+                  <button
+                    onClick={() => console.log(image.id, image.url)}
+                    type="button"
+                    className="btn-danger w-full rounded-b-xl"
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              ))
+            ) : (
+              <ProductImage
+                className="w-full h-full object-cover rounded-t-xl"
+                src={undefined}
+                alt={""}
+                width={200}
+                height={200}
+              />
+            )}
           </div>
         </div>
       </div>

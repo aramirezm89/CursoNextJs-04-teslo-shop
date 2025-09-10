@@ -1,21 +1,5 @@
 import { z } from "zod";
 
-enum Gender {
-  men,
-  women,
-  kid,
-  unisex,
-}
-
-enum Size {
-  XS,
-  S,
-  M,
-  L,
-  XL,
-  XXL,
-  XXXL,
-}
 
 export const productSchema = z.object({
   title: z

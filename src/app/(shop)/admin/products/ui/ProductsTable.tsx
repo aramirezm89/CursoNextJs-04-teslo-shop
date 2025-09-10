@@ -1,6 +1,6 @@
 "use client";
 
-import { Pagination } from "@/components";
+import { Pagination, ProductImage } from "@/components";
 import { Product } from "@/interfaces";
 import { currencyFormat } from "@/utils";
 import Image from "next/image";
@@ -113,9 +113,9 @@ export const ProductsTable = ({ products, totalPages }: Props) => {
             >
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                 <Link href={`/product/${product.slug}`}>
-                  <Image
+                  <ProductImage
                     className="w-20 h-20 object-cover rounded"
-                    src={`/products/${product.images[0]}`}
+                    src={product.images[0]?.url}
                     alt={product.title}
                     width={50}
                     height={50}

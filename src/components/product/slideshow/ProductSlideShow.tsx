@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 // Import Swiper React components
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
-
+import { ProductImage } from "@/components";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -20,6 +20,12 @@ interface Props {
 }
 export const ProductSlideShow = ({ images }: Props) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
+
+  if (!images || images.length === 0) {
+    return (
+      <ProductImage src={""} alt="Product image" width={1024} height={800} />
+    );
+  }
   return (
     <div className="hidden md:block">
       <Swiper
@@ -29,7 +35,6 @@ export const ProductSlideShow = ({ images }: Props) => {
             "--swiper-pagination-color": "#fff",
           } as React.CSSProperties
         }
-     
         spaceBetween={10}
         navigation={true}
         thumbs={{ swiper: thumbsSwiper }}
@@ -42,9 +47,9 @@ export const ProductSlideShow = ({ images }: Props) => {
       >
         {images.map((image, index) => (
           <SwiperSlide key={index}>
-            <Image
+            <ProductImage
               className="object-fill rounded-lg"
-              src={`/products/${image}`}
+              src={image}
               alt={`Product image ${index + 1}`}
               width={1024}
               height={800}
@@ -54,7 +59,6 @@ export const ProductSlideShow = ({ images }: Props) => {
       </Swiper>
       <Swiper
         onSwiper={setThumbsSwiper}
-     
         spaceBetween={10}
         slidesPerView={images.length}
         freeMode={true}
@@ -64,9 +68,9 @@ export const ProductSlideShow = ({ images }: Props) => {
       >
         {images.map((image, index) => (
           <SwiperSlide key={index}>
-            <Image
+            <ProductImage
               className="object-fill rounded-lg"
-              src={`/products/${image}`}
+              src={image}
               alt={`Product image ${index + 1}`}
               width={1024}
               height={800}

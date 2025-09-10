@@ -39,7 +39,7 @@ export const getPaginatedProductsWithImages = async ({
       include: {
         images: {
           take: 2,
-          select: { url: true },
+       
         },
       },
       where:{
@@ -62,7 +62,7 @@ export const getPaginatedProductsWithImages = async ({
       products: products.map((product) => {
         return {
           ...product,
-          images: product.images.map((i) => i.url),
+          images: product.images,
           categorie: categories.find((c) => c.id === product.categoryId)
             ?.name as Category,
         };

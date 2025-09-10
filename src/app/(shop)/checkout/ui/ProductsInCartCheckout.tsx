@@ -4,6 +4,7 @@ import { useCartStore } from "@/store/cart-store";
 import { currencyFormat } from "@/utils";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { ProductImage } from "@/components";
 
 export const ProductsInCartCheckout = () => {
   const [loaded, setloaded] = useState(false);
@@ -20,8 +21,8 @@ export const ProductsInCartCheckout = () => {
     <>
       {cart.map((product) => (
         <div key={product.slug + product.size} className="flex mb-15">
-          <Image
-            src={`/products/${product.image.url}`}
+          <ProductImage
+            src={product.image?.url}
             width={100}
             height={100}
             style={{

@@ -10,9 +10,9 @@ interface Props{
 }
 export const ProductCard = ({product} : Props) => {
 
-    const [displayimage, setdisplayimage] = useState(product.images[0])
+    const [displayimage, setdisplayimage] = useState(product.images[0].url)
     const changeImage = (imageIndex : number = 0) =>{
-        setdisplayimage(product.images[imageIndex])
+        setdisplayimage(product.images[imageIndex].url)
     }
     
   return (
