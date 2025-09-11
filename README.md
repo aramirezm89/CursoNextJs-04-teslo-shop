@@ -11,6 +11,7 @@ Una aplicación de e-commerce moderna desarrollada con Next.js 15, que incluye a
 - **Estado global**: Zustand
 - **Formularios**: React Hook Form + Zod
 - **UI Components**: React Icons, Swiper
+- **Almacenamiento de imágenes**: Cloudinary
 - **Contenedores**: Docker & Docker Compose
 
 ## 📋 Características
@@ -57,6 +58,7 @@ Una aplicación de e-commerce moderna desarrollada con Next.js 15, que incluye a
    - `NEXT_PUBLIC_PAYPAL_CLIENT_ID`: ID del cliente de PayPal (público)
    - `PAYPAL_CLIENT_ID`: ID del cliente de PayPal (El mismo que NEXT_PUBLIC_PAYPAL_CLIENT_ID pero este es el que se usa en el lado servidor)
    - `PAYPAL_CLIENT_SECRET`: Clave secreta de PayPal (privada)
+   - `CLOUDINARY_URL`: URL de configuración de Cloudinary para subida de imágenes
 
 4. **Levantar la base de datos**
    ```bash
@@ -139,6 +141,33 @@ Para configurar Google OAuth, necesitas:
 - Crear un proyecto en Google Cloud Console
 - Configurar las credenciales OAuth 2.0
 - Agregar las variables `GOOGLE_CLIENT_ID` y `GOOGLE_CLIENT_SECRET` al archivo `.env`
+
+## 📸 Cloudinary - Gestión de Imágenes
+
+El proyecto utiliza Cloudinary para el almacenamiento y optimización de imágenes de productos.
+
+### Configuración de Cloudinary
+
+1. **Crear cuenta en Cloudinary**
+   - Visita [https://console.cloudinary.com/](https://console.cloudinary.com/)
+   - Crea una cuenta gratuita
+
+2. **Obtener credenciales**
+   - En el dashboard, encontrarás tu `Cloud Name`, `API Key` y `API Secret`
+
+3. **Configurar variable de entorno**
+   ```bash
+   # Cloudinary upload images products
+   # https://console.cloudinary.com/
+   CLOUDINARY_URL=cloudinary://<your_api_key>:<your_api_secret>@<your_cloud_name>
+   ```
+
+### Características implementadas
+- ✅ Subida automática de imágenes de productos
+- ✅ Optimización automática de imágenes
+- ✅ Transformaciones dinámicas
+- ✅ Almacenamiento en la nube
+- ✅ URLs optimizadas para Next.js Image
 
 ## 🚀 Despliegue en Producción
 

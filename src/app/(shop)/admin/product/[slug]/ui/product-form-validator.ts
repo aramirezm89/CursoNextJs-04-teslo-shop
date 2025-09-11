@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-
 export const productSchema = z.object({
   title: z
     .string()
@@ -14,17 +13,18 @@ export const productSchema = z.object({
     .string()
     .min(10, { message: "La descripción debe tener al menos 10 caracteres" }),
 
-    inStock: z
+  inStock: z
     .number({ message: "El stock debe ser un número" })
     .min(0, { message: "El stock debe ser mayor a 0" }),
-   
 
   price: z
     .number({ message: "El precio debe ser un número" })
     .min(0, { message: "El precio debe ser mayor a 0" }),
-   
 
-  tags: z.string().regex(/^[a-zA-Z0-9,\s]*$/).min(1, { message: "Debe ingresar al menos un tag" }),
+  tags: z
+    .string()
+    .regex(/^[a-zA-Z0-9,\s]*$/)
+    .min(1, { message: "Debe ingresar al menos un tag" }),
   gender: z.enum(["men", "women", "kid", "unisex"]),
 
   categoryId: z.string().min(1, { message: "Debe seleccionar una categoría" }),
@@ -39,17 +39,20 @@ export const productSchema = z.object({
     })
     .transform((files) => Array.from(files))
     .pipe(
-      z.array(
-        z
-          .instanceof(File)
-          .refine(
-            (file) => ["image/jpeg", "image/png"].includes(file.type),
-            "Solo se permiten imágenes JPEG o PNG"
-          )
-          .refine((file) => file.size <= 5 * 1024 * 1024, {
-            message: "Cada archivo debe pesar máximo 5MB",
-          })
-      )
+      z
+        .array(
+          z
+            .instanceof(File)
+            .refine(
+              (file) => ["image/jpeg", "image/png","image/avif"].includes(file.type),
+              "Solo se permiten imágenes JPEG o PNG"
+            )
+        )
+        .refine(
+          (files) =>
+            files.reduce((acc, f) => acc + f.size, 0) <= 10 * 1024 * 1024,
+          { message: "El total de imágenes no debe superar los 10MB" }
+        )
     ),
 });
 

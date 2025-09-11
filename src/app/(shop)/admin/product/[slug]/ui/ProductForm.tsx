@@ -24,13 +24,12 @@ export const ProductForm = ({ product, categories }: Props) => {
         ...product,
         tags: product.tags?.join(",") ?? "",
         sizes: product.sizes ?? [],
-        //todo: images
       }
     : {};
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitted },
     reset,
     setValue,
     getValues,
@@ -62,6 +61,7 @@ export const ProductForm = ({ product, categories }: Props) => {
   const onSubmit = async (data: ProductFormData) => {
     console.log(data);
     const { images, ...productData } = data;
+    console.log(images, "images");
 
     const formData = new FormData();
     Object.entries(productData).forEach(([key, value]) => {
@@ -71,13 +71,19 @@ export const ProductForm = ({ product, categories }: Props) => {
     if (product.id) {
       formData.append("id", product.id);
     }
-    const { ok, productToCreateUpdate } = await createUpdateProduct(formData);
 
-   if(!ok){
-    return alert("Error al actualizar el producto");
-   }
+    if (images) {
+      images.forEach((image) => {
+        formData.append("images", image);
+      });
+    }
+   const { ok, productToCreateUpdate } = await createUpdateProduct(formData);
 
-router.replace(`/admin/product/${productToCreateUpdate?.slug}`);
+    if (!ok) {
+      return alert("Error al actualizar el producto");
+    }
+
+    router.replace(`/admin/product/${productToCreateUpdate?.slug}`);
   };
   return (
     <form
@@ -197,10 +203,9 @@ router.replace(`/admin/product/${productToCreateUpdate?.slug}`);
 
         <button
           type="submit"
-          disabled={!isValid}
-          className={clsx(" w-full", {
-            "btn-disabled": !isValid,
-            "btn-primary": isValid,
+          disabled={!isValid && isSubmitted}
+          className={clsx(" w-full btn-primary", {
+            "btn-disabled": !isValid && isSubmitted,
           })}
         >
           Guardar
@@ -250,12 +255,12 @@ router.replace(`/admin/product/${productToCreateUpdate?.slug}`);
             )}
           </div>
 
-          <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-2">
-            {product && product.images!.length > 0 ? (
-              product?.images?.map((image) => (
+          <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3">
+            {product?.images?.length ? (
+              product.images.map((image) => (
                 <div key={image.id}>
                   <ProductImage
-                    className="w-full h-full object-cover rounded-t-xl"
+                    className="w-full  object-cover rounded-t-xl"
                     src={image?.url}
                     alt={product?.title ?? ""}
                     width={200}
