@@ -1,6 +1,6 @@
 "use client";
 
-import { createUpdateProduct } from "@/actions";
+import { createUpdateProduct, deleteImage } from "@/actions";
 import { ProductImage } from "@/components";
 import { CategoryEntity, Product } from "@/interfaces";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,6 +9,8 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Size } from "../../../../../../../generated/prisma";
 import { ProductFormData, productSchema } from "./product-form-validator";
+import { useState } from "react";
+import { sleep } from "@/utils/sleep";
 
 interface Props {
   product: Partial<Product>;
@@ -18,6 +20,21 @@ interface Props {
 const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
 
 export const ProductForm = ({ product, categories }: Props) => {
+  const [deletingIds, setDeletingIds] = useState<Set<number>>(new Set());
+
+  const handleDelete = async (image: { id: number; url: string }) => {
+    setDeletingIds((prev) => new Set(prev).add(image.id));
+    try {
+      const res = await deleteImage(image.id, image.url);
+      if (!res.ok) alert(res.message);
+    } finally {
+      setDeletingIds((prev) => {
+        const copy = new Set(prev);
+        copy.delete(image.id);
+        return copy;
+      });
+    }
+  };
   const router = useRouter();
   const defaultValues = product
     ? {
@@ -77,7 +94,7 @@ export const ProductForm = ({ product, categories }: Props) => {
         formData.append("images", image);
       });
     }
-   const { ok, productToCreateUpdate } = await createUpdateProduct(formData);
+    const { ok, productToCreateUpdate } = await createUpdateProduct(formData);
 
     if (!ok) {
       return alert("Error al actualizar el producto");
@@ -266,13 +283,13 @@ export const ProductForm = ({ product, categories }: Props) => {
                     width={200}
                     height={200}
                   />
-
                   <button
-                    onClick={() => console.log(image.id, image.url)}
+                    onClick={() => handleDelete(image)}
                     type="button"
                     className="btn-danger w-full rounded-b-xl"
+                    disabled={deletingIds.has(image.id)}
                   >
-                    Eliminar
+                    {deletingIds.has(image.id) ? "Eliminando..." : "Eliminar"}
                   </button>
                 </div>
               ))

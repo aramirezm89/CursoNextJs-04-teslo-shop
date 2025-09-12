@@ -5,6 +5,7 @@ import { Product, Size } from "../../../generated/prisma";
 import prisma from "../../../lib/prisma";
 import { revalidatePath } from "next/cache";
 import cloudinary from "../../../lib/cloudinary";
+import { sleep } from "@/utils/sleep";
 
 const productSchema = z.object({
   id: z.uuid("El ID debe ser un UUID válido").optional().nullable(),
@@ -94,7 +95,6 @@ export const createUpdateProduct = async (formData: FormData) => {
     //browse through images and save them
 
     if (formData.getAll("images")) {
-  
       const imagesUrls = await uploadImages(
         formData.getAll("images") as File[]
       );
@@ -153,5 +153,51 @@ export const uploadImages = async (images: File[]) => {
   } catch (error) {
     console.log(error);
     return null;
+  }
+};
+
+export const deleteImage = async (
+  imageId: number,
+  imageUrl: string,
+
+) => {
+
+
+  // "/my-cloudinary-ar/image/upload/v1757621364/products/czqm3y7xgfixgwsam2wz.avif"
+
+  // Dividir por "/" y quitar los segmentos de versión + extensión
+  const parts = imageUrl.split("/");
+  const withoutVersion = parts.slice(7).join("/"); // "products/czqm3y7xgfixgwsam2wz.avif"
+
+  const publicId = withoutVersion.replace(/\.[^/.]+$/, ""); // quitar extensión
+  console.log(publicId, "publicId");
+  try {
+    const cloudinaryResult = await cloudinary.uploader.destroy(publicId);
+    console.log("cloudinaryresult", cloudinaryResult);
+    if (cloudinaryResult.result !== "ok") {
+      return {
+        ok: false,
+        message: "Error al eliminar la imagen en Cloudinary",
+      };
+    }
+    console.log("borrando de la base de datos");
+    const deletedImage = await prisma.productImage.delete({
+      where: { id: imageId },
+      select: {
+        product: {
+          select: {
+            slug: true,
+          },
+        },
+      },
+    });
+    console.log(deletedImage, "deletedImage");
+    revalidatePath(`/admin/products`);
+    revalidatePath(`/admin/product/${deletedImage.product.slug}`);
+    revalidatePath(`/products`);
+    return { ok: true, message: "Imagen eliminada correctamente" };
+  } catch (error) {
+    console.error(error);
+    return { ok: false, message: "No se pudo eliminar la imagen" };
   }
 };
