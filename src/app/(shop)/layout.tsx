@@ -1,13 +1,11 @@
-import { auth } from "@/auth";
 import { Footer, SideBar, TopMenu } from "@/components";
-import { redirect } from "next/navigation";
 
 export default async function ShopLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
+
 
   /*   if(session?.user){
     console.log(session)

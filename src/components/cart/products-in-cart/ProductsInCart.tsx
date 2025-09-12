@@ -1,11 +1,10 @@
 "use client";
 
+import { ProductImage } from "@/components";
 import { QuantitySelector } from "@/components/product/quantity-selector/QuantitySelector";
 import { useCartStore } from "@/store/cart-store";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import {  ProductImage } from "@/components";
 
 export const ProductsInCart = () => {
  

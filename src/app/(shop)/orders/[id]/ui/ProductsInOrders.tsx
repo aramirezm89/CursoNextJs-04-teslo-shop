@@ -1,11 +1,9 @@
 "use client";
 
-import { OrderItem, Product } from "@/interfaces";
-import { useCartStore } from "@/store/cart-store";
-import { currencyFormat } from "@/utils";
-import Image from "next/image";
-import { useEffect, useState } from "react";
 import { ProductImage } from "@/components";
+import { OrderItem } from "@/interfaces";
+import { currencyFormat } from "@/utils";
+import { useEffect, useState } from "react";
 
 interface Props {
   orderProducts: OrderItem[];

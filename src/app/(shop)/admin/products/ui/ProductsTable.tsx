@@ -3,14 +3,12 @@
 import { Pagination, ProductImage } from "@/components";
 import { Product } from "@/interfaces";
 import { currencyFormat } from "@/utils";
-import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
-  IoCardOutline,
-  IoChevronUp,
   IoChevronDown,
-  IoSwapVertical,
+  IoChevronUp,
+  IoSwapVertical
 } from "react-icons/io5";
 
 interface Props {

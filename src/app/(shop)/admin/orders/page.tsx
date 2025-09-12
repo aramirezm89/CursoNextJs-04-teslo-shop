@@ -1,9 +1,7 @@
 import { getOrdersAdmin } from "@/actions";
-import { Pagination, Title } from "@/components";
+import { Title } from "@/components";
 
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { IoCardOutline } from "react-icons/io5";
 import { OrdersTable } from "./ui/OrdersTable";
 
 interface Props {

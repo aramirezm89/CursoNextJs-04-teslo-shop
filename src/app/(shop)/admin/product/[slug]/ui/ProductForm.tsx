@@ -6,11 +6,10 @@ import { CategoryEntity, Product } from "@/interfaces";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Size } from "../../../../../../../generated/prisma";
 import { ProductFormData, productSchema } from "./product-form-validator";
-import { useState } from "react";
-import { sleep } from "@/utils/sleep";
 
 interface Props {
   product: Partial<Product>;
@@ -47,7 +46,6 @@ export const ProductForm = ({ product, categories }: Props) => {
     register,
     handleSubmit,
     formState: { errors, isValid, isSubmitted },
-    reset,
     setValue,
     getValues,
     watch,

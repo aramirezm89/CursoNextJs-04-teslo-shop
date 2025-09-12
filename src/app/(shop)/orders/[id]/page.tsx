@@ -1,18 +1,17 @@
 import { getOrderById } from "@/actions";
-import { auth } from "@/auth";
 import { Title } from "@/components";
 import clsx from "clsx";
 import { redirect } from "next/navigation";
 import { IoCartOutline } from "react-icons/io5";
+import { ClearCart } from './ui/CleanCart';
 import { ProductsInOrder } from "./ui/ProductsInOrders";
 import { ResumeOrder } from "./ui/ResumeOrder";
-import { ClearCart } from './ui/CleanCart';
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 export default async function OrderPage({ params }: Props) {
-  const session = await auth();
+
   const { id } = await params;
 
   const { ok, order } = await getOrderById(id);

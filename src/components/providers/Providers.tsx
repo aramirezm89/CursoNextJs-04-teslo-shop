@@ -3,7 +3,7 @@
 import { AuthProvider } from "@/app/auth/auth-provider/AuthProvider";
 import React from "react";
 
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 interface ProvidersProps {
   children: React.ReactNode;

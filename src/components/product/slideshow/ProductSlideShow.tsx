@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
 // Import Swiper React components
-import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import { ProductImage } from "@/components";
+import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -12,7 +12,6 @@ import "swiper/css/thumbs";
 import "./slideShow.css";
 
 // import required modules
-import Image from "next/image";
 import { Autoplay, FreeMode, Navigation, Thumbs } from "swiper/modules";
 
 interface Props {

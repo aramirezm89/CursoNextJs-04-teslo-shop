@@ -3,7 +3,7 @@
 import { getInStockProduct } from "@/actions";
 import { titleFont } from "@/config";
 import clsx from "clsx";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface Props {
   slug: string;
@@ -11,15 +11,17 @@ interface Props {
 export const StockLabel = ({ slug }: Props) => {
   const [stock, setstock] = useState<number>();
   const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    getStock();
-  }, []);
 
-  const getStock = async () => {
+  const getStock = useCallback(async () => {
     const stock = await getInStockProduct(slug);
     setstock(stock);
     setIsLoading(false);
-  };
+  }, [slug]);
+
+  useEffect(() => {
+    getStock();
+  }, [getStock]);
+
 
   return (
     <h1

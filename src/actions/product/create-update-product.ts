@@ -1,11 +1,13 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { Product, Size } from "../../../generated/prisma";
+
 import prisma from "../../../lib/prisma";
-import { revalidatePath } from "next/cache";
-import cloudinary from "../../../lib/cloudinary";
-import { sleep } from "@/utils/sleep";
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config(process.env.CLOUDINARY_URL ?? "");
 
 const productSchema = z.object({
   id: z.uuid("El ID debe ser un UUID válido").optional().nullable(),
@@ -156,13 +158,7 @@ export const uploadImages = async (images: File[]) => {
   }
 };
 
-export const deleteImage = async (
-  imageId: number,
-  imageUrl: string,
-
-) => {
-
-
+export const deleteImage = async (imageId: number, imageUrl: string) => {
   // "/my-cloudinary-ar/image/upload/v1757621364/products/czqm3y7xgfixgwsam2wz.avif"
 
   // Dividir por "/" y quitar los segmentos de versión + extensión

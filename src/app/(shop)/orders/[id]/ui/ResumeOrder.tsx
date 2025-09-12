@@ -3,10 +3,7 @@
 import { PaypalButtons } from "@/components";
 import { Order, OrderAdress } from "@/interfaces";
 import { currencyFormat } from "@/utils";
-import { PayPalButtons } from "@paypal/react-paypal-js";
-import clsx from "clsx";
 import { useEffect, useState } from "react";
-import { IoCartOutline } from "react-icons/io5";
 
 interface Props {
   orderAddress: OrderAdress;

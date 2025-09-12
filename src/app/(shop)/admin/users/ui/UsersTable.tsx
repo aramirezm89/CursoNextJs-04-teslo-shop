@@ -57,7 +57,7 @@ export const UsersTable = ({ users, totalPages }: Props) => {
   const [message, setMessage] = useState<string | null>(null);
 
   const handleChangeUserRole = async (userId: string, role: "ADMIN" | "USER") => {
-    const { ok, message } = await changeUserRole(userId, role);
+    const {  message } = await changeUserRole(userId, role);
     setMessage(message);
     setTimeout(() => {
       setMessage(null);

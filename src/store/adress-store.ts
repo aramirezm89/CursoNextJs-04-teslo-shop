@@ -17,7 +17,7 @@ interface State {
   setAddress: (address: State['address']) => void,
 }
 export const useAdressStore = create<State>()(
-  persist((set,get) => ({
+  persist((set) => ({
   address:{
     name: "",
     lastName: "",

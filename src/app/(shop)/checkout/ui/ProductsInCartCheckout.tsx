@@ -1,10 +1,9 @@
 "use client";
 
+import { ProductImage } from "@/components";
 import { useCartStore } from "@/store/cart-store";
 import { currencyFormat } from "@/utils";
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import { ProductImage } from "@/components";
 
 export const ProductsInCartCheckout = () => {
   const [loaded, setloaded] = useState(false);
