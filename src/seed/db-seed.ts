@@ -49,7 +49,7 @@ async function main() {
   );
 
   const productsData = initialData.products.map((p) => {
-    const { type, ...productData } = p;
+    const { type,images, ...productData } = p;
     return {
       ...productData,
       categoryId: categoriesMap[type],
