@@ -21,7 +21,7 @@ export const LoginForm = () => {
       update();
       router.replace("/");
     }
-  }, [errorMessage, router, update]);
+  }, [errorMessage]);
 
   return (
     <form className="flex flex-col" action={formAction}>
