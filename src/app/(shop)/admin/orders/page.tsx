@@ -11,6 +11,8 @@ export default async function OrdersPage({ searchParams }: Props) {
   const { page, take } = await searchParams;
   const { ok, orders = [], totalPages } = await getOrdersAdmin({ page, take });
 
+  console.log(orders,"orders desde ka pagina");
+
   if (!ok) {
     redirect("/auth/login");
   }
