@@ -3,7 +3,12 @@
 import { Pagination } from "@/components";
 import Link from "next/link";
 import React, { useState, useMemo } from "react";
-import { IoCardOutline, IoChevronUp, IoChevronDown, IoSwapVertical } from "react-icons/io5";
+import {
+  IoCardOutline,
+  IoChevronUp,
+  IoChevronDown,
+  IoSwapVertical,
+} from "react-icons/io5";
 
 export interface OrderCom {
   id: string;
@@ -125,13 +130,13 @@ export const OrdersTable = ({ orderCom, totalPages }: Props) => {
               <td className="flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 {orderCom.isPaid ? (
                   <>
-                    <IoCardOutline className="text-red-800" />
-                    <span className="mx-2 text-red-800">No Pagada</span>
+                    <IoCardOutline className="text-green-800" />
+                    <span className="mx-2 text-green-800">Pagada</span>
                   </>
                 ) : (
                   <>
-                    <IoCardOutline className="text-green-800" />
-                    <span className="mx-2 text-green-800">Pagada</span>
+                    <IoCardOutline className="text-red-800" />
+                    <span className="mx-2 text-red-800">No Pagada</span>
                   </>
                 )}
               </td>
